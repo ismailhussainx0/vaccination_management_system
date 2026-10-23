@@ -134,12 +134,16 @@ if($_SERVER["REQUEST_METHOD"] === "POST"){
                             echo "Not Registered";
                         }
 
+                        // INSERT STATEMENT CLOSE
                         $insertStmt->close();
 
 
 
 
                     }
+
+                    // SELECT STATEMENT CLOSE 
+                    $selectStmt->close();
                     
                 } catch(mysqli_sql_exception $error){
 
