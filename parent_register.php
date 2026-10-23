@@ -76,8 +76,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 try {
 
                     // Check whether email already exists
-                    $selectSql =
-                        "SELECT * FROM parents WHERE email = ?";
+                    $selectSql = "SELECT * FROM parents WHERE email = ?";
 
                     $selectStmt = mysqli_prepare(
                         $connect,
@@ -129,7 +128,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
                 } catch (mysqli_sql_exception $error) {
 
-                    echo "Something went wrong. Please try again.";
+                    echo "Something went wrong. In Parent Registration. Please try again.";
 
                 }
 

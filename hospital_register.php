@@ -95,8 +95,61 @@ if($_SERVER["REQUEST_METHOD"] === "POST"){
             // CHECKING CONFIRM PASSWORD
             if($confirmPassword === $password){
 
+                $hashPassword = password_hash($password, PASSWORD_DEFAULT);
                 
+                try{
 
+                    $selectSql = "SELECT * FROM hospital WHERE hospital_email = ?";
+                    $selectStmt = mysqli_prepare($connect, $selectSql);
+                    $selectStmt->bind_param("s", $hospitalEmail);
+                    $selectStmt->execute();
+
+                    $selectResult = $selectStmt->get_result();
+
+                    if(mysqli_num_rows($selectResult) > 0){
+
+                        echo "This Email is already exists";
+
+                    }else{
+
+                        $insertSql = "INSERT INTO hospital
+                                    (hospital_name, hospital_email, hospital_phone, password, hospital_address)
+                                    VALUES (?, ?, ?, ?, ?)";
+
+                        $insertStmt = mysqli_prepare($connect, $insertSql);
+                        $insertStmt->bind_param(
+                            "sssss",
+                            $hospitalName,
+                            $hospitalEmail,
+                            $hospitalPhone,
+                            $hashPassword,
+                            $hospitalAddress
+                            );
+
+                        $insertResult = $insertStmt->execute(); 
+
+                        if($insertResult){
+                            echo "registered";
+                        }else{
+                            echo "Not Registered";
+                        }
+
+                        $insertStmt->close();
+
+
+
+
+                    }
+                    
+                } catch(mysqli_sql_exception $error){
+
+                    echo "Something Went Wrong. in Hospital Registration Try later";
+
+                }
+
+
+            }else {
+                echo "Confirm Password is Incroccet";
             }
 
 
@@ -118,21 +171,7 @@ if($_SERVER["REQUEST_METHOD"] === "POST"){
 
 
 
-
-
-
 }
-
-
-
-
-
-
-
-
-
-
-
 
 
 
