@@ -129,9 +129,14 @@ if($_SERVER["REQUEST_METHOD"] === "POST"){
                         $insertResult = $insertStmt->execute(); 
 
                         if($insertResult){
-                            echo "registered";
+
+                            header("Location: hospital_login.php");
+                            exit;
+
                         }else{
+
                             echo "Not Registered";
+
                         }
 
                         // INSERT STATEMENT CLOSE
