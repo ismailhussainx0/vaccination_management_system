@@ -45,8 +45,7 @@
 
 <?php
 session_start();
-include "db_connection.php";
-
+include "../config/db_connection.php";
 
 if($_SERVER["REQUEST_METHOD"] === "POST"){
 
@@ -90,7 +89,7 @@ if($_SERVER["REQUEST_METHOD"] === "POST"){
                 }
 
                 // CLOSE STATEMENT 
-                $selectStmt->close();
+                $selectStmt->close(); 
 
                 
             }catch(mysqli_sql_exception $e){

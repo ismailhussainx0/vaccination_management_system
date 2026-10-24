@@ -41,7 +41,7 @@
 
 <?php
 session_start();
-include "db_connection.php";
+include "../config/db_connection.php";
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
@@ -81,7 +81,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                         $_SESSION["parent_id"] = $resultRow["parent_id"];    
                         $_SESSION["name"] = $resultRow["name"];    
         
-                        echo "Login Successfully";
+                        header("Location: dashboard.php");
 
                     } else {
 
