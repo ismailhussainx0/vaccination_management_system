@@ -45,19 +45,33 @@ if($_SERVER["REQUEST_METHOD"] === "POST"){
 
     if(isset($_POST["child_name"], $_POST["date_of_birth"])){
 
-        $childName = $_POST["child_name"];
+        $childName = trim($_POST["child_name"]);
         $dateOfBirth = $_POST["date_of_birth"];
         $parentId = $_SESSION["parent_id"];
 
        if(!empty($childName) && !empty($dateOfBirth)){
 
-           $insertQuery = "INSERT INTO child (child_name, date_of_birth, parent_id) VALUES (?, ?, ?)";      
-           $insertStmt = mysqli_prepare($connect, $insertQuery);
-           $insertQuery->bind_param("sis", $childName, $dateOfBirth, $parentId);
-           
+        try{
 
+            
+            $insertQuery = "INSERT INTO child (child_name, date_of_birth, parent_id) VALUES (?, ?, ?)";      
+            $insertStmt = mysqli_prepare($connect, $insertQuery);
+            $insertStmt->bind_param("ssi", $childName, $dateOfBirth, $parentId);
+            $result = $insertStmt->execute();
+            
+            if($result){
+                echo "Data added successfully"; 
+            }else {
+                echo "Data Not added";
+            }
 
-
+            $insertStmt->close();
+                
+        }catch(mysqli_sql_exception $error){
+            echo "Something Went Wrong. Please try later!";
+        }
+                
+                
        }else{
            echo "Fill all Fields"; 
        }
