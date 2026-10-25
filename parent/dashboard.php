@@ -1,28 +1,16 @@
 <?php
-session_start();
+
 include "../config/db_connection.php";
+include "parent_auth.php";
 
-if(!empty($_SESSION["parent_id"])){
-
-    $userName = $_SESSION["name"]; 
-
-    echo "Hello $userName". $_SESSION["parent_id"];
-
-}else{
-    header("Location: parent_login.php");
-}
-
-
-
-
-
-
-
-
-
-
-
-
+$userName = $_SESSION['parent_name'];
 
 
 ?>
+
+
+<h1>Welcome, <?php echo htmlspecialchars($userName); ?>!</h1>
+<p>Welcome to your Parent Dashboard.</p>
+<button>
+    <a href="child.php">+ Add Child</a>
+</button>

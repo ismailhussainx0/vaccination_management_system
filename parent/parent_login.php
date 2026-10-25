@@ -79,7 +79,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
                         // Store data in session
                         $_SESSION["parent_id"] = $resultRow["parent_id"];    
-                        $_SESSION["name"] = $resultRow["name"];    
+                        $_SESSION["parent_name"] = $resultRow["name"];    
         
                         header("Location: dashboard.php");
 
