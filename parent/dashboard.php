@@ -30,7 +30,7 @@ $result = $selectStmt->get_result();
 <h1>Welcome, <?php echo htmlspecialchars($userName); ?>!</h1>
 <p>Welcome to your Parent Dashboard.</p>
 <button>
-    <a href="child.php">+ Add Child</a>
+    <a href="add_child.php">+ Add Child</a>
 </button>
 
     <h2>My Children</h2>
@@ -45,7 +45,7 @@ $result = $selectStmt->get_result();
             <tr>
                 <th>Child Name</th>
                 <th>Date of Birth</th>
-                <th>Delete Child</th>
+                <th>Action</th>
             </tr>
         </thead>
 
@@ -61,8 +61,17 @@ $result = $selectStmt->get_result();
                     <td><?php echo htmlspecialchars($row["date_of_birth"]); ?></td>
 
                     <td>
-                        <a href="child_delete.php?child_id=<?php echo $row["child_id"]?>">Delete Child</a>
+
+                        <form action="delete_child.php" method="post">
+
+                            <input type="hidden" name="child_id" value="<?php echo $row["child_id"] ?>">
+
+                            <button type="submit">Delete</button>
+
+                        </form>
+
                     </td>
+                    
                 </tr>
 
             <?php
