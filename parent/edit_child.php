@@ -16,6 +16,13 @@ if(isset($_GET["child_id"])){
 
     $resultRow = mysqli_fetch_assoc($result);
 
+    if(mysqli_num_rows($resultRow) > 0){
+
+
+
+
+    }
+
     // DATA FROM DATABASE
     $childName = $resultRow["child_name"];
     $dateOfBirth = $resultRow["date_of_birth"];
@@ -78,21 +85,26 @@ if($_SERVER["REQUEST_METHOD"] === "POST"){
         $updatedName = trim($_POST["child_name"]);
         $updatedDate = $_POST["date_of_birth"];
 
+        $updateSql = "UPDATE child
+                      SET child_name = ?, date_of_birth = ?
+                      WHERE child_id = ? AND parent_id = ?";
+
+       $updateStmt = mysqli_prepare($connect, $updateSql);
+       $updateStmt->bind_param("ssii", $updatedName, $updatedDate, $childId, $parentId); 
+       $updateResult = $updateStmt->execute();
+
+       if($updateResult){
+           header("Location: dashboard.php"); 
+           exit;
+       }
+
 
 
 
     }
 
 
-
-
-
 }
-
-
-
-
-
 
 
 
