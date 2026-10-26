@@ -35,37 +35,62 @@ $result = $selectStmt->get_result();
 
     <h2>My Children</h2>
 
-    <table>
+    <?php
+
+    if(mysqli_num_rows($result) > 0){
+    
+    ?>
+    <table border=1>
         <thead>
             <tr>
                 <th>Child Name</th>
                 <th>Date of Birth</th>
+                <th>Delete Child</th>
             </tr>
         </thead>
 
         <tbody>
-            <?php
-            while ($row = mysqli_fetch_assoc($result)) {
-                ?>
-                <td>
-                    <tr><?php echo $row["child_name"]; ?></tr>
-                </td>
 
-                 <td>
-                    <tr><?php echo $row["date_of_birth"]; ?></tr>
-                </td>
+            <?php
+
+            while ($row = mysqli_fetch_assoc($result)) {
+            ?>
+                
+                <tr>
+                    <td><?php echo htmlspecialchars($row["child_name"]); ?></td>
+                    <td><?php echo htmlspecialchars($row["date_of_birth"]); ?></td>
+
+                    <td>
+                        <a href="child_delete.php?child_id=<?php echo $row["child_id"]?>">Delete Child</a>
+                    </td>
+                </tr>
+
+            <?php
+            }
+
+          
+            ?>
 
         </tbody>
     </table>
+
+<?php
+
+}else{
+    echo "No children added yet";
+}
+
+$selectStmt->close();
+
+
+?>
+
 
 </body>
 </html>
 
 
-<?php
-}
 
-?>
 
 
 
