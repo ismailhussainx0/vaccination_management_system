@@ -46,6 +46,7 @@ $result = $selectStmt->get_result();
                 <th>Child Name</th>
                 <th>Date of Birth</th>
                 <th>Action</th>
+                <th>Action</th>
             </tr>
         </thead>
 
@@ -60,6 +61,7 @@ $result = $selectStmt->get_result();
                     <td><?php echo htmlspecialchars($row["child_name"]); ?></td>
                     <td><?php echo htmlspecialchars($row["date_of_birth"]); ?></td>
 
+                    <!-- DELETE -->
                     <td>
 
                         <form action="delete_child.php" method="post">
@@ -71,7 +73,12 @@ $result = $selectStmt->get_result();
                         </form>
 
                     </td>
-                    
+
+                    <!-- EDIT -->
+                    <td>
+                        <a href="edit_child.php?child_id=<?php echo $row["child_id"] ?>">Edit</a>
+                    </td>
+
                 </tr>
 
             <?php
