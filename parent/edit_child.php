@@ -2,6 +2,9 @@
 include "parent_auth.php";
 include "../config/db_connection.php";
 
+if(isset($_GET["child_id"])){
+
+
     // IDES PARENT AND CHILD
     $childId = $_GET["child_id"];
     $parentId = $_SESSION["parent_id"];
@@ -20,10 +23,6 @@ include "../config/db_connection.php";
         $resultRow = mysqli_fetch_assoc($result);
 
         
-        // OLD DATA FROM DATABASE
-        $childName = $resultRow["child_name"];
-        $dateOfBirth = $resultRow["date_of_birth"];
-        
         if($_SERVER["REQUEST_METHOD"] === "POST"){
 
 
@@ -32,19 +31,27 @@ include "../config/db_connection.php";
                 $updatedName = trim($_POST["child_name"]);
                 $updatedDate = $_POST["date_of_birth"];
 
-                $updateSql = "UPDATE child
+                if(!empty($updatedName) && !empty($updatedDate)){
+
+                    
+                    $updateSql = "UPDATE child
                             SET child_name = ?, date_of_birth = ?
                             WHERE child_id = ? AND parent_id = ?";
 
-                $updateStmt = mysqli_prepare($connect, $updateSql);
-                $updateStmt->bind_param("ssii", $updatedName, $updatedDate, $childId, $parentId); 
-                $updateResult = $updateStmt->execute();
+                    $updateStmt = mysqli_prepare($connect, $updateSql);
+                    $updateStmt->bind_param("ssii", $updatedName, $updatedDate, $childId, $parentId); 
+                    $updateResult = $updateStmt->execute();
 
-                if($updateResult){
-                    header("Location: dashboard.php"); 
-                    exit;
+                    if($updateResult){
+                        header("Location: dashboard.php"); 
+                        exit;
+                    }
+
+                    $updateStmt->close();
+    
+                }else{
+                    echo "Please Data Enter Properly";
                 }
-
 
 
 
@@ -54,9 +61,9 @@ include "../config/db_connection.php";
         }
 
 
-    }else{
-        echo "This child doesnot exists";
-    }
+
+
+   
 
 
 
@@ -74,6 +81,7 @@ include "../config/db_connection.php";
 <body>
 
 
+
 <form action="" method="POST">
 
     <label for="child_name">Child Name:</label>
@@ -81,7 +89,7 @@ include "../config/db_connection.php";
         type="text"
         id="child_name"
         name="child_name"
-        value="<?php echo htmlspecialchars($childName); ?>"
+        value="<?php echo htmlspecialchars($resultRow["child_name"]); ?>"
         required
     >
 
@@ -92,7 +100,7 @@ include "../config/db_connection.php";
         type="date"
         id="date_of_birth"
         name="date_of_birth"
-        value="<?php echo htmlspecialchars($dateOfBirth); ?>"
+        value="<?php echo htmlspecialchars($resultRow["date_of_birth"]); ?>"
         required
     >
 
@@ -110,8 +118,16 @@ include "../config/db_connection.php";
 
 <?php
 
+// row checking else
+}else{
+    echo "This child doesnot exists";
+}
 
+// child id else 
+}else{
+    echo "Invalid request. Child ID is missing.";
 
+}
 
 
 ?>
