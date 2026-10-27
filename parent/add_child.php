@@ -60,7 +60,8 @@ if($_SERVER["REQUEST_METHOD"] === "POST"){
             $result = $insertStmt->execute();
             
             if($result){
-                echo "Data added successfully"; 
+                header("Location: dashboard.php");
+                exit;
             }else {
                 echo "Data Not added";
             }

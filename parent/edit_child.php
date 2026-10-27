@@ -2,11 +2,11 @@
 include "parent_auth.php";
 include "../config/db_connection.php";
 
-if(isset($_GET["child_id"])){
-
+    // IDES PARENT AND CHILD
     $childId = $_GET["child_id"];
     $parentId = $_SESSION["parent_id"];
     
+    // SELECT INSERTED DATA 
     $selectSql = "SELECT * FROM child WHERE child_id = ? AND parent_id = ?";
     $selectStmt = mysqli_prepare($connect, $selectSql);
     $selectStmt->bind_param("ii", $childId, $parentId);
@@ -14,20 +14,52 @@ if(isset($_GET["child_id"])){
 
     $result = $selectStmt->get_result();
 
-    $resultRow = mysqli_fetch_assoc($result);
+    
+    if(mysqli_num_rows($result) > 0){
+        
+        $resultRow = mysqli_fetch_assoc($result);
 
-    if(mysqli_num_rows($resultRow) > 0){
+        
+        // OLD DATA FROM DATABASE
+        $childName = $resultRow["child_name"];
+        $dateOfBirth = $resultRow["date_of_birth"];
+        
+        if($_SERVER["REQUEST_METHOD"] === "POST"){
+
+
+            if(isset($_POST["child_name"], $_POST["date_of_birth"])){
+                
+                $updatedName = trim($_POST["child_name"]);
+                $updatedDate = $_POST["date_of_birth"];
+
+                $updateSql = "UPDATE child
+                            SET child_name = ?, date_of_birth = ?
+                            WHERE child_id = ? AND parent_id = ?";
+
+                $updateStmt = mysqli_prepare($connect, $updateSql);
+                $updateStmt->bind_param("ssii", $updatedName, $updatedDate, $childId, $parentId); 
+                $updateResult = $updateStmt->execute();
+
+                if($updateResult){
+                    header("Location: dashboard.php"); 
+                    exit;
+                }
 
 
 
 
+            }
+
+
+        }
+
+
+    }else{
+        echo "This child doesnot exists";
     }
 
-    // DATA FROM DATABASE
-    $childName = $resultRow["child_name"];
-    $dateOfBirth = $resultRow["date_of_birth"];
 
-}
+
 ?>
 
 
@@ -78,33 +110,6 @@ if(isset($_GET["child_id"])){
 
 <?php
 
-if($_SERVER["REQUEST_METHOD"] === "POST"){
-
-    if(isset($_POST["child_name"], $_POST["date_of_birth"])){
-        
-        $updatedName = trim($_POST["child_name"]);
-        $updatedDate = $_POST["date_of_birth"];
-
-        $updateSql = "UPDATE child
-                      SET child_name = ?, date_of_birth = ?
-                      WHERE child_id = ? AND parent_id = ?";
-
-       $updateStmt = mysqli_prepare($connect, $updateSql);
-       $updateStmt->bind_param("ssii", $updatedName, $updatedDate, $childId, $parentId); 
-       $updateResult = $updateStmt->execute();
-
-       if($updateResult){
-           header("Location: dashboard.php"); 
-           exit;
-       }
-
-
-
-
-    }
-
-
-}
 
 
 
