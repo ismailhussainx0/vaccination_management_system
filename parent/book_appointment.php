@@ -28,6 +28,7 @@ if($_SERVER["REQUEST_METHOD"] === "POST"){
 
     if(isset($_POST["child_id"], $_POST["hospital_id"], $_POST["vaccine_id"], $_POST["appointment_date"], $_POST["appointment_time"])){
 
+
         $childId = $_POST["child_id"];
         $hospitalId = $_POST["hospital_id"];
         $vaccineId = $_POST["vaccine_id"];
@@ -35,6 +36,34 @@ if($_SERVER["REQUEST_METHOD"] === "POST"){
         $appointmentTime = $_POST["appointment_time"];
 
         if(!empty($childId) && !empty($hospitalId) && !empty($vaccineId) && !empty($appointmentDate) && !empty($appointmentTime)){
+
+
+            
+            // CHECKING CHILD ROW SAHI PARENT KI HA YA NAHI 
+            $checkSql = "SELECT child_id FROM child WHERE child_id = ? AND parent_id = ?";
+            $checkStmt = mysqli_prepare($connect, $checkSql);
+            $checkStmt->bind_param("ii", $childId, $parentId);
+            $checkStmt->execute();
+
+            $checkResult = $checkStmt->get_result();
+
+            // CHECKING HOSPITAL ID IS CORRECT OR WRONG
+            $checkHospital = "SELECT hospital_id FROM hospital WHERE hospital_id = ?";
+            $checkHospitalStmt = mysqli_prepare($connect, $checkHospital);
+            $checkHospitalStmt->bind_param("i", $hospitalId);
+            $checkHospitalStmt->execute();
+
+            $checkHospitalResult = $checkHospitalStmt->get_result();
+
+            // CHECKING VACCINE ID IS CORRECT OR WRONG
+            $checkVaccine = "SELECT vaccine_id FROM vaccines WHERE vaccine_id = ?";
+            $checkVaccineStmt = mysqli_prepare($connect, $checkVaccine);
+            $checkVaccineStmt->bind_param("i", $vaccineId);
+            $checkVaccineStmt->execute();
+
+            $checkVaccineResult = $checkVaccineStmt->get_result();
+
+            if(mysqli_num_rows($checkResult) > 0 && mysqli_num_rows($checkHospitalResult) > 0 && mysqli_num_rows($checkVaccineResult) > 0){
 
             // APPOINTMENT INSERT
             $insertSql = "INSERT INTO appointments
@@ -48,10 +77,16 @@ if($_SERVER["REQUEST_METHOD"] === "POST"){
             if($result){
                 echo "Appointment Booked";
             }
+            
+            }else{
+                echo "Invalid child, hospital, or vaccine selection.";
+            }
 
 
 
 
+        }else{
+            echo "Please Enter all Fields";
         }
 
 
