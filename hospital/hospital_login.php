@@ -76,8 +76,9 @@ if($_SERVER["REQUEST_METHOD"] === "POST"){
 
                         $_SESSION['hospitalId'] = $resultRow['hospital_id'];
                         $_SESSION['hospitalName'] = $resultRow['hospital_name'];
-                        
-                        echo "loged In";
+    
+                        header("Location: hospital_dashboard.php");
+                        exit;
                         
                     }else {
                         echo "Incorrect Password";

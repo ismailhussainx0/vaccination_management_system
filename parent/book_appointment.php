@@ -65,19 +65,28 @@ if($_SERVER["REQUEST_METHOD"] === "POST"){
 
             if(mysqli_num_rows($checkResult) > 0 && mysqli_num_rows($checkHospitalResult) > 0 && mysqli_num_rows($checkVaccineResult) > 0){
 
-            // APPOINTMENT INSERT
-            $insertSql = "INSERT INTO appointments
-            (child_id, hospital_id, vaccine_id, appointment_date, appointment_time)
-            VALUES (?, ?, ?, ?, ?)";
+                try{
 
-            $insertStmt = mysqli_prepare($connect, $insertSql);
-            $insertStmt->bind_param("iiiss", $childId, $hospitalId, $vaccineId, $appointmentDate, $appointmentTime);
-            $result = $insertStmt->execute();
+                    // APPOINTMENT INSERT
+                    $insertSql = "INSERT INTO appointments
+                    (child_id, hospital_id, vaccine_id, appointment_date, appointment_time)
+                    VALUES (?, ?, ?, ?, ?)";
 
-            if($result){
-                echo "Appointment Booked";
-            }
-            
+                    $insertStmt = mysqli_prepare($connect, $insertSql);
+                    $insertStmt->bind_param("iiiss", $childId, $hospitalId, $vaccineId, $appointmentDate, $appointmentTime);
+                    $result = $insertStmt->execute();
+
+                    if($result){
+                        echo "Appointment Booked";
+                    }
+
+                    $insertStmt->close();
+
+                } catch (mysqli_sql_exception $e) {
+                    echo "Unable to book appointment. Please try again.";
+                    }
+                
+                
             }else{
                 echo "Invalid child, hospital, or vaccine selection.";
             }
