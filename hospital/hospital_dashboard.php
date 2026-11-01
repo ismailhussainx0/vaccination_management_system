@@ -3,8 +3,52 @@
 include "../config/db_connection.php";
 include "hospital_auth.php";
 
+if($_SERVER["REQUEST_METHOD"] === "POST"){
+
+    if(isset($_POST["appointment_id"], $_POST["appointment_status"])){
+
+        $hospitalId = $_SESSION["hospitalId"];
+        $updatedStatus = $_POST["appointment_status"];
+        $appointmentId = $_POST["appointment_id"];
+
+        if($updatedStatus === "Pending" || $updatedStatus === "Confirmed" || $updatedStatus === "Cancelled" || $updatedStatus === "Completed"){
+
+            
+            $updateSql = "UPDATE appointments 
+            SET appointment_status = ? 
+            WHERE appointment_id = ? AND hospital_id = ?";
+
+            $updateStmt = mysqli_prepare($connect, $updateSql);
+            $updateStmt->bind_param("sii", $updatedStatus, $appointmentId, $hospitalId);
+            $updateResult = $updateStmt->execute();
+
+            if($updateResult){
+                
+                header("Location: hospital_dashboard.php");
+                exit;
+                
+            }
+    
+        }else{
+
+            echo "Wrong Status Chosen";
+
+        }
+
+
+
+        
+    }else{
+        echo "Values is not set Properly";
+    }
+
+
+
+}
+
 try{
 
+    // APPOINTMENT TABLE SHOW QUERY 
     $appointmentSql = "SELECT
 
             appointments.appointment_id,
@@ -70,6 +114,7 @@ try{
             <th>Appointment Date</th>
             <th>Appointment Time</th>
             <th>Status</th>
+            <th>Action</th>
         </tr>
 
         <?php while ($row = mysqli_fetch_assoc($result)) { ?>
@@ -86,6 +131,39 @@ try{
                 <td><?php echo htmlspecialchars($row["appointment_time"]); ?></td>
 
                 <td><?php echo htmlspecialchars($row["appointment_status"]); ?></td>
+
+                <td>
+
+                    <form action="" method="post">
+
+                        <input type="hidden" name="appointment_id" value="<?php echo $row["appointment_id"]; ?>">
+
+                        <select name="appointment_status" required>
+
+                            <option value="Pending">
+                               
+                                <?php if($row["appointment_status"] === "Pending"){
+                                    Pending
+                                    
+                                }?>
+                            </option>
+
+
+
+                            <option value="Confirmed">Confirmed</option>
+                            <option value="Cancelled">Cancelled</option>
+                            <option value="Completed">Completed</option>
+
+                        </select>
+
+                        <button type="submit" name="update_status">
+                            Update
+                        </button>
+
+                    </form>
+
+                </td>
+
             </tr>
 
         <?php } ?>
@@ -104,16 +182,6 @@ try{
 
 </body>
 </html>
-
-
-
-
-
-<?php
-
-
-
-?>
 
 
 
