@@ -140,19 +140,26 @@ try{
 
                         <select name="appointment_status" required>
 
-                            <option value="Pending">
-                               
-                                <?php if($row["appointment_status"] === "Pending"){
-                                    Pending
-                                    
-                                }?>
+                            <!-- pending -->
+                            <option value="Pending" <?php if($row["appointment_status"] === "Pending") echo "selected"; ?> >
+                                Pending
                             </option>
 
 
+                            <!-- Confirmed Option -->
+                            <option value="Confirmed" <?php if($row["appointment_status"] === "Confirmed") echo "selected"; ?>>
+                                Confirmed
+                            </option>
 
-                            <option value="Confirmed">Confirmed</option>
-                            <option value="Cancelled">Cancelled</option>
-                            <option value="Completed">Completed</option>
+                                <!-- Confirmed Option -->
+                            <option value="Cancelled" <?php if($row["appointment_status"] === "Cancelled") echo "selected"; ?>>
+                                Cancelled
+                            </option>
+
+                                <!-- Confirmed Option -->
+                            <option value="Completed" <?php if($row["appointment_status"] === "Completed") echo "selected"; ?>>
+                                Completed
+                            </option>
 
                         </select>
 
