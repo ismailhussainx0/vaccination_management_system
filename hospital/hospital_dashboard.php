@@ -205,7 +205,7 @@ try {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 
     <!-- Hospital Custom CSS -->
-    <link rel="stylesheet" href="hospital.css">
+    <link rel="stylesheet" href="CSS/dashboard.css">
 </head>
 
 <body>
