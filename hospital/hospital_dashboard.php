@@ -7,15 +7,29 @@ if($_SERVER["REQUEST_METHOD"] === "POST"){
 
     if(isset($_POST["appointment_id"], $_POST["appointment_status"])){
 
-    echo "Ismail";
         $hospitalId = $_SESSION["hospitalId"];
         $updatedStatus = $_POST["appointment_status"];
         $appointmentId = $_POST["appointment_id"];
 
+        // VACCINATION_RECORD TABLE INSERTION ON CONDITION
+        if($updatedStatus === "Completed"){
 
+        $vaccinationDate = date("Y-m-d");
+        $vaccinationStatus = "Vaccinated";
+
+        $vaccinationRecordSql = "INSERT INTO vaccination_record 
+        (appointment_id, vaccination_status, vaccination_date)
+        VALUES (?,?,?)";
+
+        $recordStmt = mysqli_prepare($connect, $vaccinationRecordSql);
+        $recordStmt->bind_param("iss", $appointmentId, $vaccinationStatus, $vaccinationDate);
+        $recordStmt->execute();
+
+        }
+
+        // UPDATE STATUS QUERY 
         if($updatedStatus === "Pending" || $updatedStatus === "Confirmed" || $updatedStatus === "Cancelled" || $updatedStatus === "Completed"){
 
-            
             $updateSql = "UPDATE appointments 
             SET appointment_status = ? 
             WHERE appointment_id = ? AND hospital_id = ?";
@@ -30,6 +44,10 @@ if($_SERVER["REQUEST_METHOD"] === "POST"){
                 exit;
                 
             }
+            
+            // UPDATE RESULT CLOSED
+            $updateResult->close();
+
     
         }else{
 
@@ -39,27 +57,12 @@ if($_SERVER["REQUEST_METHOD"] === "POST"){
 
 
 
+
         
     }else{
         echo "Values is not set Properly";
     }
 
-
-    // VACCINATION_RECORD INSERTION ON CONDITION
-    if($updatedStatus === "Completed"){
-
-        $vaccinationDate = date("Y-m-d");
-        $vaccinationStatus = "Vaccinated";
-
-        $vaccinationRecordSql = "INSERT INTO vaccination_record 
-        (appointment_id, vaccination_status, vaccination_date)
-        VALUES (?,?,?)";
-
-        $recordStmt = mysqli_prepare($connect, $vaccinationRecordSql);
-        $recordStmt->bind_param("iss", $appointmentId, $vaccinationStatus, $vaccinationDate);
-        $recordStmt->execute();
-
-    }
 
 
 
