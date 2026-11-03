@@ -557,3 +557,14 @@ body {
         font-size: 19px;
     }
 }
+
+
+.logout-link {
+    color: #ffb4b4;
+    margin-top: 15px;
+}
+
+.logout-link:hover {
+    background: #49313b;
+    color: #ffffff;
+}

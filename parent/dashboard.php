@@ -65,6 +65,18 @@ $result = $selectStmt->get_result();
                     <span>My Children</span>
                 </a>
 
+                <a href="book_appointment.php" class="nav-link">
+                <i class="fa-solid fa-calendar-check"></i>
+                <span>Book Appointment</span>
+                </a>
+            
+                <a href="logout.php" class="nav-link logout-link"
+                onclick="return confirm('Are you sure you want to logout?');">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                    <span>Logout</span>
+                </a>
+
+
             </nav>
 
             <div class="sidebar-bottom">
