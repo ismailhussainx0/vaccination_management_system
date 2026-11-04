@@ -154,7 +154,7 @@ if (isset($_GET["child_id"])) {
                 <a href="book_appointment.php" class="nav-link">
                 <i class="fa-solid fa-calendar-check"></i>
                 <span>Book Appointment</span>
-                </a>
+                </a>    
 
                                 
                 <a href="logout.php" class="nav-link logout-link"
