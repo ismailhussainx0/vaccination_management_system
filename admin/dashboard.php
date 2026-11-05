@@ -127,6 +127,11 @@ $totalCompleted = $completedData["completed_appointments"];
                     Manage Hospitals
                 </a>
 
+                <a href="manage_vaccines.php" class="menu-link">
+                    <i class="fa-solid fa-syringe"></i>
+                    Manage Vaccines
+                </a>
+
             </div>
 
             <div class="sidebar-bottom">

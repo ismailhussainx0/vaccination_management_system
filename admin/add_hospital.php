@@ -127,6 +127,11 @@ if (isset($_POST["add_hospital"])) {
                     Manage Hospitals
                 </a>
 
+                <a href="manage_vaccines.php">
+                    <i class="fa-solid fa-syringe"></i>
+                    Manage Vaccines
+                </a>
+
                 <a href="admin_logout.php" class="logout-link">
                     <i class="fa-solid fa-right-from-bracket"></i>
                     Logout
