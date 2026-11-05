@@ -1,4 +1,3 @@
-
 <?php
 include "../config/db_connection.php";
 include "parent_auth.php";
@@ -61,127 +60,78 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Add Child | VaccineCare</title>
 
-    <link rel="stylesheet" href="CSS/add_child.css">
-
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+    <link rel="stylesheet" href="CSS/parent-app.css">
 </head>
 
 <body>
 
-<div class="dashboard-layout">
+<div class="app">
 
-    <!-- Sidebar -->
-    <aside class="sidebar">
+    <?php $activePage = "add_child"; include __DIR__ . "/includes/sidebar.php"; ?>
 
-        <div class="brand">
-            <div class="brand-icon">
-                <i class="fa-solid fa-heart-pulse"></i>
-            </div>
+    <div class="app-main">
 
-            <span>VaccineCare</span>
-        </div>
-
-        <div class="sidebar-section">
-            <p class="sidebar-heading">MENU</p>
-
-            <nav class="sidebar-nav">
-
-                <a href="dashboard.php" class="nav-link">
-                    <i class="fa-solid fa-house"></i>
-                    <span>Dashboard</span>
-                </a>
-
-                <a href="add_child.php" class="nav-link active">
-                    <i class="fa-solid fa-child"></i>
-                    <span>Add Child</span>
-                </a>
-
-               <a href="book_appointment.php" class="nav-link">
-                <i class="fa-solid fa-calendar-check"></i>
-                <span>Book Appointment</span>
-              </a>
-
-                <a href="logout.php" class="nav-link logout-link"
-                onclick="return confirm('Are you sure you want to logout?');">
-                    <i class="fa-solid fa-right-from-bracket"></i>
-                    <span>Logout</span>
-                </a>
-
-            </nav>
-        </div>
-
-        <div class="sidebar-bottom">
-            <div class="sidebar-help">
-                <i class="fa-solid fa-circle-question"></i>
-                <div>
-                    <strong>Need Help?</strong>
-                    <p>Contact support</p>
-                </div>
-            </div>
-        </div>
-
-    </aside>
-
-
-    <!-- Main Content -->
-    <main class="main-content">
-
-        <!-- Topbar -->
         <header class="topbar">
 
-            <div>
-                <p class="topbar-label">Parent Portal</p>
-                <h2>Add Child</h2>
+            <div class="topbar-left">
+
+                <button type="button" class="icon-btn menu-btn" data-menu-toggle
+                        aria-label="Open menu" aria-controls="sidebar" aria-expanded="false">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+
+                <div class="topbar-title">
+                    <p>Parent Portal</p>
+                    <h2>Add Child</h2>
+                </div>
+
             </div>
 
-            <div class="profile">
-                <div class="profile-avatar">
-                    <i class="fa-solid fa-user"></i>
-                </div>
+            <div class="profile-chip">
+                <span class="avatar"><?php echo htmlspecialchars(strtoupper(substr($_SESSION["parent_name"], 0, 1))); ?></span>
 
-                <div class="profile-info">
-                    <strong>
-                        <?php echo htmlspecialchars($_SESSION["parent_name"]); ?>
-                    </strong>
-                    <span>Parent Account</span>
-                </div>
+                <span class="profile-text">
+                    <strong><?php echo htmlspecialchars($_SESSION["parent_name"]); ?></strong>
+                    <small>Parent Account</small>
+                </span>
             </div>
 
         </header>
 
+        <main class="page">
 
-        <!-- Page Content -->
-        <section class="page-content">
+            <div class="page-head">
 
-            <div class="page-heading">
                 <div>
-                    <span class="eyebrow">CHILD MANAGEMENT</span>
+                    <span class="eyebrow">Child Management</span>
                     <h1>Add a New Child</h1>
                     <p>Enter your child's details to add them to your account.</p>
                 </div>
 
-                <a href="dashboard.php" class="back-button">
+                <a href="dashboard.php" class="btn btn-ghost">
                     <i class="fa-solid fa-arrow-left"></i>
                     Back to Dashboard
                 </a>
+
             </div>
 
 
-            <!-- Form Card -->
-            <div class="form-card">
+            <div class="card form-card">
 
-                <div class="form-card-header">
+                <div class="form-card-head">
 
                     <div class="form-icon">
                         <i class="fa-solid fa-child-reaching"></i>
@@ -205,7 +155,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 <?php endif; ?>
 
 
-                <form action="" method="POST">
+                <form action="" method="POST" class="form-body">
 
                     <div class="form-group">
 
@@ -255,11 +205,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
                     <div class="form-actions">
 
-                        <a href="dashboard.php" class="cancel-button">
-                            Cancel
-                        </a>
+                        <a href="dashboard.php" class="btn btn-ghost">Cancel</a>
 
-                        <button type="submit" name="add_child" class="submit-button">
+                        <button type="submit" name="add_child" class="btn btn-primary">
                             <i class="fa-solid fa-plus"></i>
                             Add Child
                         </button>
@@ -270,11 +218,17 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
             </div>
 
-        </section>
+        </main>
 
-    </main>
+        <footer class="app-footer">
+            &copy; 2026 VaccineCare. All rights reserved.
+        </footer>
+
+    </div>
 
 </div>
+
+<script src="JS/parent.js"></script>
 
 </body>
 </html>

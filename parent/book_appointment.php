@@ -1,4 +1,3 @@
-
 <?php
 include "parent_auth.php";
 include "../config/db_connection.php";
@@ -159,131 +158,71 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     <title>Book Appointment | VaccineCare</title>
 
-    <link rel="stylesheet" href="CSS/book-appointment.css">
-
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+    <link rel="stylesheet" href="CSS/parent-app.css">
 </head>
 
 <body>
 
-<div class="dashboard-layout">
+<div class="app">
 
-    <!-- Sidebar -->
-    <aside class="sidebar">
+    <?php $activePage = "book"; include __DIR__ . "/includes/sidebar.php"; ?>
 
-        <div class="brand">
-            <div class="brand-icon">
-                <i class="fa-solid fa-heart-pulse"></i>
-            </div>
+    <div class="app-main">
 
-            <span>VaccineCare</span>
-        </div>
-
-        <div class="sidebar-section">
-
-            <p class="sidebar-heading">MENU</p>
-
-            <nav class="sidebar-nav">
-
-                <a href="dashboard.php" class="nav-link">
-                    <i class="fa-solid fa-house"></i>
-                    <span>Dashboard</span>
-                </a>
-
-                <a href="add_child.php" class="nav-link">
-                    <i class="fa-solid fa-child"></i>
-                    <span>Add Child</span>
-                </a>
-
-                <a href="book_appointment.php" class="nav-link active">
-                    <i class="fa-solid fa-calendar-check"></i>
-                    <span>Book Appointment</span>
-                </a>
-
-                <a href="logout.php" class="nav-link logout-link"
-                onclick="return confirm('Are you sure you want to logout?');">
-                    <i class="fa-solid fa-right-from-bracket"></i>
-                    <span>Logout</span>
-                </a>
-
-            </nav>
-
-        </div>
-
-        <div class="sidebar-bottom">
-            <div class="sidebar-help">
-                <i class="fa-solid fa-circle-question"></i>
-
-                <div>
-                    <strong>Need Help?</strong>
-                    <p>Contact support</p>
-                </div>
-            </div>
-        </div>
-
-    </aside>
-
-
-    <!-- Main Content -->
-    <main class="main-content">
-
-        <!-- Topbar -->
         <header class="topbar">
 
-            <div>
-                <p class="topbar-label">Parent Portal</p>
-                <h2>Book Appointment</h2>
+            <div class="topbar-left">
+
+                <button type="button" class="icon-btn menu-btn" data-menu-toggle
+                        aria-label="Open menu" aria-controls="sidebar" aria-expanded="false">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+
+                <div class="topbar-title">
+                    <p>Parent Portal</p>
+                    <h2>Book Appointment</h2>
+                </div>
+
             </div>
 
-            <div class="profile">
+            <div class="profile-chip">
+                <span class="avatar"><?php echo htmlspecialchars(strtoupper(substr($_SESSION["parent_name"], 0, 1))); ?></span>
 
-                <div class="profile-avatar">
-                    <i class="fa-solid fa-user"></i>
-                </div>
-
-                <div class="profile-info">
-                    <strong>
-                        <?php echo htmlspecialchars($_SESSION["parent_name"]); ?>
-                    </strong>
-
-                    <span>Parent Account</span>
-                </div>
-
+                <span class="profile-text">
+                    <strong><?php echo htmlspecialchars($_SESSION["parent_name"]); ?></strong>
+                    <small>Parent Account</small>
+                </span>
             </div>
 
         </header>
 
+        <main class="page">
 
-        <!-- Page Content -->
-        <section class="page-content">
-
-            <div class="page-heading">
+            <div class="page-head">
 
                 <div>
-                    <span class="eyebrow">APPOINTMENT MANAGEMENT</span>
-
+                    <span class="eyebrow">Appointment Management</span>
                     <h1>Book a Vaccination Appointment</h1>
-
                     <p>Select your child, hospital, vaccine and preferred schedule.</p>
                 </div>
 
-                <a href="dashboard.php" class="back-button">
-                    <i class="fa-solid fa-arrow-left"></i>
-                    Back to Dashboard
+                <a href="my_appointments.php" class="btn btn-ghost">
+                    <i class="fa-solid fa-calendar-check"></i>
+                    My Appointments
                 </a>
 
             </div>
 
 
-            <!-- Form Card -->
-            <div class="form-card">
+            <div class="card form-card">
 
-                <div class="form-card-header">
+                <div class="form-card-head">
 
                     <div class="form-icon">
                         <i class="fa-solid fa-calendar-plus"></i>
@@ -316,7 +255,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
                 <?php if (mysqli_num_rows($childResult) > 0 && mysqli_num_rows($hospitalResult) > 0 && mysqli_num_rows($vaccineResult) > 0): ?>
 
-                    <form action="" method="POST">
+                    <form action="" method="POST" class="form-body">
 
                         <div class="form-group">
 
@@ -345,7 +284,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
                         </div>
 
-
                         <div class="form-group">
 
                             <label for="hospital_id">Select Hospital</label>
@@ -372,7 +310,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                             </div>
 
                         </div>
-
 
                         <div class="form-group">
 
@@ -447,18 +384,15 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
                         <div class="form-note">
                             <i class="fa-solid fa-circle-info"></i>
-
                             Your appointment request will initially have Pending status.
                         </div>
 
 
                         <div class="form-actions">
 
-                            <a href="dashboard.php" class="cancel-button">
-                                Cancel
-                            </a>
+                            <a href="dashboard.php" class="btn btn-ghost">Cancel</a>
 
-                            <button type="submit" class="submit-button">
+                            <button type="submit" class="btn btn-primary">
                                 <i class="fa-solid fa-calendar-check"></i>
                                 Book Appointment
                             </button>
@@ -471,7 +405,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
                     <div class="empty-state">
 
-                        <i class="fa-solid fa-circle-info"></i>
+                        <div class="empty-icon">
+                            <i class="fa-solid fa-circle-info"></i>
+                        </div>
 
                         <h3>Booking Not Available</h3>
 
@@ -483,9 +419,14 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                             <?php endif; ?>
                         </p>
 
-                        <a href="dashboard.php" class="back-button">
-                            Back to Dashboard
-                        </a>
+                        <?php if (mysqli_num_rows($childResult) === 0): ?>
+                            <a href="add_child.php" class="btn btn-primary">
+                                <i class="fa-solid fa-plus"></i>
+                                Add Child
+                            </a>
+                        <?php else: ?>
+                            <a href="dashboard.php" class="btn btn-ghost">Back to Dashboard</a>
+                        <?php endif; ?>
 
                     </div>
 
@@ -493,11 +434,17 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
             </div>
 
-        </section>
+        </main>
 
-    </main>
+        <footer class="app-footer">
+            &copy; 2026 VaccineCare. All rights reserved.
+        </footer>
+
+    </div>
 
 </div>
+
+<script src="JS/parent.js"></script>
 
 </body>
 </html>

@@ -1,4 +1,3 @@
-
 <?php
 
 include "../config/db_connection.php";
@@ -64,219 +63,108 @@ function getVaccinationStatusClass($status) {
 <html lang="en">
 
 <head>
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Vaccination History | VaxCare</title>
+    <title>Vaccination Records | VaccineCare</title>
 
-    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="CSS/vaccination-history.css">
-
+    <link rel="stylesheet" href="CSS/parent-app.css">
 </head>
 
 <body>
 
-<div class="dashboard-container">
+<div class="app">
 
-    <!-- Sidebar -->
-    <aside class="sidebar" id="sidebar">
+    <?php $activePage = "records"; include __DIR__ . "/includes/sidebar.php"; ?>
 
-        <div class="sidebar-brand">
+    <div class="app-main">
 
-            <div class="brand-icon">
-                <i class="fa-solid fa-heart-pulse"></i>
-            </div>
-
-            <div class="brand-text">
-                <h2>VaxCare</h2>
-                <span>Parent Portal</span>
-            </div>
-
-        </div>
-
-
-        <div class="sidebar-menu">
-
-            <p class="menu-heading">MAIN MENU</p>
-
-            <a href="dashboard.php" class="nav-link">
-                <i class="fa-solid fa-house"></i>
-                <span>Dashboard</span>
-            </a>
-
-            <a href="add_child.php" class="nav-link">
-                <i class="fa-solid fa-child"></i>
-                <span>Add Child</span>
-            </a>
-
-            <a href="book_appointment.php" class="nav-link">
-                <i class="fa-solid fa-calendar-plus"></i>
-                <span>Book Appointment</span>
-            </a>
-
-            <a href="my_appointments.php" class="nav-link">
-                <i class="fa-solid fa-calendar-check"></i>
-                <span>My Appointments</span>
-            </a>
-
-            <a href="vaccination_history.php" class="nav-link active">
-                <i class="fa-solid fa-syringe"></i>
-                <span>Vaccination History</span>
-            </a>
-
-        </div>
-
-
-        <div class="sidebar-bottom">
-
-            <div class="sidebar-help">
-
-                <div class="help-icon">
-                    <i class="fa-solid fa-circle-question"></i>
-                </div>
-
-                <div>
-                    <h4>Need Help?</h4>
-                    <p>Contact support for assistance.</p>
-                </div>
-
-            </div>
-
-
-            <a href="logout.php"
-               class="nav-link logout-link"
-               onclick="return confirm('Are you sure you want to logout?');">
-
-                <i class="fa-solid fa-right-from-bracket"></i>
-                <span>Logout</span>
-
-            </a>
-
-        </div>
-
-    </aside>
-
-
-    <!-- Main Content -->
-    <main class="main-content">
-
-
-        <!-- Topbar -->
         <header class="topbar">
 
             <div class="topbar-left">
 
-                <button class="menu-toggle" id="menuToggle">
+                <button type="button" class="icon-btn menu-btn" data-menu-toggle
+                        aria-label="Open menu" aria-controls="sidebar" aria-expanded="false">
                     <i class="fa-solid fa-bars"></i>
                 </button>
 
-                <div>
-                    <p class="breadcrumb">Parent Portal / Vaccination History</p>
-                    <h2>Vaccination History</h2>
+                <div class="topbar-title">
+                    <p>Parent Portal</p>
+                    <h2>Vaccination Records</h2>
                 </div>
 
             </div>
 
+            <div class="profile-chip">
+                <span class="avatar"><?php echo htmlspecialchars(strtoupper(substr($_SESSION["parent_name"], 0, 1))); ?></span>
 
-            <div class="topbar-right">
-
-                <div class="topbar-icon">
-                    <i class="fa-regular fa-bell"></i>
-                </div>
-
-                <div class="profile-avatar">
-                    <i class="fa-solid fa-user"></i>
-                </div>
-
+                <span class="profile-text">
+                    <strong><?php echo htmlspecialchars($_SESSION["parent_name"]); ?></strong>
+                    <small>Parent Account</small>
+                </span>
             </div>
 
         </header>
 
+        <main class="page">
 
-        <!-- Page Content -->
-        <section class="page-content">
-
-
-            <!-- Page Heading -->
-            <div class="page-heading">
+            <div class="page-head">
 
                 <div>
-                    <h1>Vaccination History</h1>
-
-                    <p>
-                        Track the vaccination records of all your children.
-                    </p>
+                    <span class="eyebrow">Health Records</span>
+                    <h1>Vaccination Records</h1>
+                    <p>Track the vaccination records of all your children.</p>
                 </div>
 
-                <a href="book_appointment.php" class="book-btn">
-
+                <a href="book_appointment.php" class="btn btn-primary">
                     <i class="fa-solid fa-plus"></i>
                     Book Appointment
-
                 </a>
 
             </div>
 
 
-            <!-- Summary Card -->
-            <div class="summary-card">
+            <div class="card stat">
 
-                <div class="summary-icon">
+                <div class="stat-icon">
                     <i class="fa-solid fa-shield-heart"></i>
                 </div>
 
-                <div class="summary-info">
-
+                <div>
                     <p>Total Vaccination Records</p>
-
                     <h2><?php echo $totalRecords; ?></h2>
-
                 </div>
 
             </div>
 
 
-            <!-- History Card -->
-            <div class="history-card">
+            <div class="card">
 
-
-                <div class="card-header">
+                <div class="card-head">
 
                     <div>
                         <h3>Vaccination Records</h3>
-
-                        <p>
-                            A record of vaccines administered to your children.
-                        </p>
+                        <p>A record of vaccines administered to your children.</p>
                     </div>
 
-                    <span class="record-count">
-                        <?php echo $totalRecords; ?> Records
-                    </span>
+                    <span class="pill"><?php echo $totalRecords; ?> Records</span>
 
                 </div>
 
 
                 <?php if ($totalRecords > 0) { ?>
 
+                    <div class="table-wrap">
 
-                    <!-- Records Table -->
-                    <div class="table-wrapper">
-
-                        <table>
+                        <table class="data-table">
 
                             <thead>
-
                                 <tr>
                                     <th>Record ID</th>
                                     <th>Child</th>
@@ -285,9 +173,7 @@ function getVaccinationStatusClass($status) {
                                     <th>Status</th>
                                     <th>Vaccination Date</th>
                                 </tr>
-
                             </thead>
-
 
                             <tbody>
 
@@ -295,88 +181,46 @@ function getVaccinationStatusClass($status) {
 
                                     <tr>
 
-                                        <td>
-                                            <span class="record-id">
-                                                #<?php echo htmlspecialchars($row["record_id"]); ?>
-                                            </span>
+                                        <td data-label="Record">
+                                            <span class="id-tag">#<?php echo htmlspecialchars($row["record_id"]); ?></span>
                                         </td>
 
-
-                                        <td>
-
-                                            <div class="child-info">
-
-                                                <div class="child-icon">
-                                                    <i class="fa-solid fa-child"></i>
-                                                </div>
-
-                                                <span>
-                                                    <?php echo htmlspecialchars($row["child_name"]); ?>
-                                                </span>
-
+                                        <td data-label="Child">
+                                            <div class="cell-person">
+                                                <span class="avatar-sm"><i class="fa-solid fa-child"></i></span>
+                                                <span><?php echo htmlspecialchars($row["child_name"]); ?></span>
                                             </div>
-
                                         </td>
 
-
-                                        <td>
-
-                                            <div class="vaccine-info">
-
+                                        <td data-label="Vaccine">
+                                            <span class="cell-icon">
                                                 <i class="fa-solid fa-syringe"></i>
-
                                                 <?php echo htmlspecialchars($row["vaccine_name"]); ?>
-
-                                            </div>
-
-                                        </td>
-
-
-                                        <td>
-
-                                            <div class="hospital-info">
-
-                                                <i class="fa-solid fa-hospital"></i>
-
-                                                <?php echo htmlspecialchars($row["hospital_name"]); ?>
-
-                                            </div>
-
-                                        </td>
-
-
-                                        <td>
-
-                                            <span class="status-badge <?php echo getVaccinationStatusClass($row["vaccination_status"]); ?>">
-
-                                                <span class="status-dot"></span>
-
-                                                <?php echo htmlspecialchars($row["vaccination_status"]); ?>
-
                                             </span>
-
                                         </td>
 
+                                        <td data-label="Hospital">
+                                            <span class="cell-icon">
+                                                <i class="fa-solid fa-hospital"></i>
+                                                <?php echo htmlspecialchars($row["hospital_name"]); ?>
+                                            </span>
+                                        </td>
 
-                                        <td>
+                                        <td data-label="Status">
+                                            <span class="status-badge <?php echo getVaccinationStatusClass($row["vaccination_status"]); ?>">
+                                                <span class="status-dot"></span>
+                                                <?php echo htmlspecialchars($row["vaccination_status"]); ?>
+                                            </span>
+                                        </td>
 
+                                        <td data-label="Date">
                                             <?php
-
                                             if (!empty($row["vaccination_date"])) {
-
-                                                echo date(
-                                                    "d M Y",
-                                                    strtotime($row["vaccination_date"])
-                                                );
-
+                                                echo date("d M Y", strtotime($row["vaccination_date"]));
                                             } else {
-
                                                 echo "Not available";
-
                                             }
-
                                             ?>
-
                                         </td>
 
                                     </tr>
@@ -389,11 +233,8 @@ function getVaccinationStatusClass($status) {
 
                     </div>
 
-
                 <?php } else { ?>
 
-
-                    <!-- Empty State -->
                     <div class="empty-state">
 
                         <div class="empty-icon">
@@ -402,67 +243,30 @@ function getVaccinationStatusClass($status) {
 
                         <h3>No Vaccination Records Yet</h3>
 
-                        <p>
-                            Vaccination records will appear here once
-                            your children's vaccinations have been completed
-                            and recorded by the hospital.
-                        </p>
+                        <p>Vaccination records will appear here once your children's vaccinations have been completed and recorded by the hospital.</p>
 
-                        <a href="my_appointments.php" class="empty-btn">
-
+                        <a href="my_appointments.php" class="btn btn-primary">
                             <i class="fa-solid fa-calendar-check"></i>
                             View My Appointments
-
                         </a>
 
                     </div>
 
-
                 <?php } ?>
-
 
             </div>
 
-        </section>
+        </main>
 
-    </main>
+        <footer class="app-footer">
+            &copy; 2026 VaccineCare. All rights reserved.
+        </footer>
+
+    </div>
 
 </div>
 
-
-<!-- Mobile Sidebar Overlay -->
-<div class="sidebar-overlay" id="sidebarOverlay"></div>
-
-
-<!-- JavaScript -->
-<script>
-
-    const menuToggle = document.getElementById("menuToggle");
-
-    const sidebar = document.getElementById("sidebar");
-
-    const sidebarOverlay = document.getElementById("sidebarOverlay");
-
-
-    menuToggle.addEventListener("click", function () {
-
-        sidebar.classList.toggle("show");
-
-        sidebarOverlay.classList.toggle("active");
-
-    });
-
-
-    sidebarOverlay.addEventListener("click", function () {
-
-        sidebar.classList.remove("show");
-
-        sidebarOverlay.classList.remove("active");
-
-    });
-
-</script>
-
+<script src="JS/parent.js"></script>
 
 </body>
 </html>

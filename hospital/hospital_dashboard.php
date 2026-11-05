@@ -191,318 +191,296 @@ try {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Hospital Dashboard | VaxCare</title>
+    <title>Hospital Dashboard | VaccineCare</title>
 
-    <!-- Google Font: Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 
-    <!-- Hospital Custom CSS -->
     <link rel="stylesheet" href="CSS/dashboard.css">
 </head>
 
 <body>
 
-    <div class="dashboard-wrapper">
+<div class="app">
 
-        <!-- SIDEBAR -->
-        <aside class="sidebar">
+    <div class="sidebar-overlay" data-menu-close></div>
 
-            <div class="brand">
-                <div class="brand-icon">
-                    <i class="fa-solid fa-heart-pulse"></i>
+    <!-- SIDEBAR -->
+    <aside class="sidebar" id="sidebar" aria-label="Main navigation">
+
+        <div class="sidebar-head">
+            <a href="hospital_dashboard.php" class="brand">
+                <span class="brand-icon"><i class="fa-solid fa-heart-pulse"></i></span>
+                <span class="brand-text">
+                    <strong>VaccineCare</strong>
+                    <small>Hospital Portal</small>
+                </span>
+            </a>
+
+            <button type="button" class="icon-btn sidebar-close" data-menu-close aria-label="Close menu">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+
+        <nav class="sidebar-nav">
+
+            <p class="nav-heading">Menu</p>
+
+            <a href="hospital_dashboard.php" class="nav-link active" aria-current="page">
+                <i class="fa-solid fa-table-columns"></i>
+                <span>Dashboard</span>
+            </a>
+
+            <a href="#appointments" class="nav-link">
+                <i class="fa-solid fa-calendar-check"></i>
+                <span>Appointments</span>
+            </a>
+
+        </nav>
+
+        <div class="sidebar-foot">
+            <div class="sidebar-user">
+                <span class="avatar"><i class="fa-solid fa-hospital"></i></span>
+                <div>
+                    <strong>VaccineCare Portal</strong>
+                    <small>Hospital Management</small>
+                </div>
+            </div>
+        </div>
+
+    </aside>
+
+
+    <div class="app-main">
+
+        <!-- TOPBAR -->
+        <header class="topbar">
+
+            <div class="topbar-left">
+
+                <button type="button" class="icon-btn menu-btn" data-menu-toggle
+                        aria-label="Open menu" aria-controls="sidebar" aria-expanded="false">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+
+                <div class="topbar-title">
+                    <p>Hospital Portal</p>
+                    <h2>Dashboard</h2>
                 </div>
 
-                <span>Vax<span class="brand-highlight">Care</span></span>
             </div>
 
-            <div class="sidebar-label">MENU</div>
+            <div class="profile-chip">
+                <span class="avatar"><i class="fa-solid fa-hospital"></i></span>
 
-            <nav class="sidebar-nav">
+                <span class="profile-text">
+                    <strong><?php echo date("d M Y"); ?></strong>
+                    <small>Today</small>
+                </span>
+            </div>
 
-                <a href="hospital_dashboard.php" class="nav-link active">
-                    <i class="fa-solid fa-table-columns"></i>
-                    <span>Dashboard</span>
-                </a>
+        </header>
 
-                <a href="#appointments" class="nav-link">
-                    <i class="fa-solid fa-calendar-check"></i>
-                    <span>Appointments</span>
-                </a>
 
-            </nav>
+        <main class="page">
 
-            <div class="sidebar-bottom">
-                <div class="sidebar-help-icon">
-                    <i class="fa-solid fa-shield-heart"></i>
-                </div>
+            <!-- WELCOME -->
+            <div class="welcome">
 
                 <div>
-                    <h6>VaxCare Portal</h6>
-                    <p>Hospital Management</p>
+                    <span class="eyebrow">Hospital Workspace</span>
+
+                    <h1>Welcome to your Dashboard</h1>
+
+                    <p>Manage your appointments and keep vaccination records up to date.</p>
                 </div>
+
+                <div class="welcome-icon">
+                    <i class="fa-solid fa-hospital-user"></i>
+                </div>
+
             </div>
 
-        </aside>
 
+            <!-- APPOINTMENTS -->
+            <section id="appointments">
 
-        <!-- MAIN CONTENT -->
-        <main class="main-content">
-
-            <!-- TOPBAR -->
-            <header class="topbar">
-
-                <div class="topbar-left">
-                    <button class="mobile-menu-btn" type="button" aria-label="Open menu">
-                        <i class="fa-solid fa-bars"></i>
-                    </button>
+                <div class="section-head">
 
                     <div>
-                        <p class="topbar-subtitle">Hospital Portal</p>
-                        <h5>Dashboard</h5>
-                    </div>
-                </div>
-
-                <div class="topbar-right">
-                    <div class="topbar-date">
-                        <i class="fa-regular fa-calendar"></i>
-                        <span><?php echo date("d M Y"); ?></span>
+                        <h2>Appointments</h2>
+                        <p>View and manage your hospital appointments.</p>
                     </div>
 
-                    <div class="profile-avatar">
-                        <i class="fa-solid fa-hospital"></i>
-                    </div>
-                </div>
-
-            </header>
-
-
-            <!-- PAGE CONTENT -->
-            <section class="page-content">
-
-                <!-- WELCOME SECTION -->
-                <div class="welcome-section">
-
-                    <div>
-                        <span class="welcome-tag">
-                            <i class="fa-solid fa-circle-check"></i>
-                            Hospital Workspace
-                        </span>
-
-                        <h1>Welcome to your Dashboard</h1>
-
-                        <p>
-                            Manage your appointments and keep vaccination records up to date.
-                        </p>
-                    </div>
-
-                    <div class="welcome-icon">
-                        <i class="fa-solid fa-hospital-user"></i>
-                    </div>
+                    <span class="pill">
+                        <i class="fa-solid fa-calendar-days"></i>
+                        <?php echo mysqli_num_rows($result); ?> Appointments
+                    </span>
 
                 </div>
 
 
-                <!-- APPOINTMENTS SECTION -->
-                <section class="appointments-section" id="appointments">
+                <div class="card">
 
-                    <div class="section-heading">
+                    <div class="card-head">
 
                         <div>
-                            <h2>Appointments</h2>
-                            <p>View and manage your hospital appointments.</p>
+                            <h3>All Appointments</h3>
+                            <p>Manage appointment status from here.</p>
                         </div>
 
-                        <div class="appointment-count">
-                            <i class="fa-solid fa-calendar-days"></i>
-                            <span>
-                                <?php echo mysqli_num_rows($result); ?> Appointments
-                            </span>
+                        <div class="table-search">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                            <input type="text" placeholder="Search appointments..." aria-label="Search appointments">
                         </div>
 
                     </div>
 
 
-                    <div class="table-card">
+                    <?php if (mysqli_num_rows($result) > 0) { ?>
 
-                        <div class="table-card-header">
+                        <div class="table-wrap">
 
-                            <div>
-                                <h5>All Appointments</h5>
-                                <p>Manage appointment status from here.</p>
-                            </div>
+                            <table class="data-table appointments-table">
 
-                            <div class="table-search">
-                                <i class="fa-solid fa-magnifying-glass"></i>
-                                <input type="text" placeholder="Search appointments...">
-                            </div>
+                                <thead>
+                                    <tr>
+                                        <th>Appointment</th>
+                                        <th>Child Name</th>
+                                        <th>Vaccine</th>
+                                        <th>Date</th>
+                                        <th>Time</th>
+                                        <th>Status</th>
+                                        <th>Update Status</th>
+                                    </tr>
+                                </thead>
 
-                        </div>
+                                <tbody>
 
+                                    <?php while ($row = mysqli_fetch_assoc($result)) { ?>
 
-                        <?php if (mysqli_num_rows($result) > 0) { ?>
-
-                            <div class="table-responsive">
-
-                                <table class="table appointments-table align-middle">
-
-                                    <thead>
                                         <tr>
-                                            <th>Appointment</th>
-                                            <th>Child Name</th>
-                                            <th>Vaccine</th>
-                                            <th>Date</th>
-                                            <th>Time</th>
-                                            <th>Status</th>
-                                            <th>Update Status</th>
+
+                                            <td data-label="Appointment">
+                                                <span class="id-tag">#<?php echo $row["appointment_id"]; ?></span>
+                                            </td>
+
+                                            <td data-label="Child">
+                                                <div class="cell-person">
+                                                    <span class="avatar-sm"><i class="fa-solid fa-child"></i></span>
+                                                    <span><?php echo htmlspecialchars($row["child_name"]); ?></span>
+                                                </div>
+                                            </td>
+
+                                            <td data-label="Vaccine">
+                                                <span class="cell-icon">
+                                                    <i class="fa-solid fa-syringe"></i>
+                                                    <?php echo htmlspecialchars($row["vaccine_name"]); ?>
+                                                </span>
+                                            </td>
+
+                                            <td data-label="Date">
+                                                <?php echo htmlspecialchars($row["appointment_date"]); ?>
+                                            </td>
+
+                                            <td data-label="Time">
+                                                <?php echo htmlspecialchars($row["appointment_time"]); ?>
+                                            </td>
+
+                                            <td data-label="Status">
+                                                <span class="status-badge status-<?php echo strtolower(htmlspecialchars($row["appointment_status"])); ?>">
+                                                    <span class="status-dot"></span>
+                                                    <?php echo htmlspecialchars($row["appointment_status"]); ?>
+                                                </span>
+                                            </td>
+
+                                            <td data-label="Update">
+
+                                                <form action="" method="post" class="status-form">
+
+                                                    <input
+                                                        type="hidden"
+                                                        name="appointment_id"
+                                                        value="<?php echo $row["appointment_id"]; ?>"
+                                                    >
+
+                                                    <select name="appointment_status" class="status-select" required>
+
+                                                        <option value="Pending"
+                                                            <?php if ($row["appointment_status"] === "Pending") echo "selected"; ?>>
+                                                            Pending
+                                                        </option>
+
+                                                        <option value="Confirmed"
+                                                            <?php if ($row["appointment_status"] === "Confirmed") echo "selected"; ?>>
+                                                            Confirmed
+                                                        </option>
+
+                                                        <option value="Cancelled"
+                                                            <?php if ($row["appointment_status"] === "Cancelled") echo "selected"; ?>>
+                                                            Cancelled
+                                                        </option>
+
+                                                        <option value="Completed"
+                                                            <?php if ($row["appointment_status"] === "Completed") echo "selected"; ?>>
+                                                            Completed
+                                                        </option>
+
+                                                    </select>
+
+                                                    <button type="submit" name="update_status" class="update-btn">
+                                                        <i class="fa-solid fa-rotate"></i>
+                                                        Update
+                                                    </button>
+
+                                                </form>
+
+                                            </td>
+
                                         </tr>
-                                    </thead>
 
-                                    <tbody>
+                                    <?php } ?>
 
-                                        <?php while ($row = mysqli_fetch_assoc($result)) { ?>
+                                </tbody>
 
-                                            <tr>
+                            </table>
 
-                                                <td>
-                                                    <span class="appointment-id">
-                                                        #<?php echo $row["appointment_id"]; ?>
-                                                    </span>
-                                                </td>
+                        </div>
 
-                                                <td>
-                                                    <div class="child-info">
-                                                        <div class="child-avatar">
-                                                            <i class="fa-solid fa-child"></i>
-                                                        </div>
+                    <?php } else { ?>
 
-                                                        <span>
-                                                            <?php echo htmlspecialchars($row["child_name"]); ?>
-                                                        </span>
-                                                    </div>
-                                                </td>
+                        <div class="empty-state">
 
-                                                <td>
-                                                    <span class="vaccine-name">
-                                                        <?php echo htmlspecialchars($row["vaccine_name"]); ?>
-                                                    </span>
-                                                </td>
-
-                                                <td>
-                                                    <?php echo htmlspecialchars($row["appointment_date"]); ?>
-                                                </td>
-
-                                                <td>
-                                                    <?php echo htmlspecialchars($row["appointment_time"]); ?>
-                                                </td>
-
-                                                <td>
-                                                    <span class="status-badge status-<?php echo strtolower(htmlspecialchars($row["appointment_status"])); ?>">
-                                                        <span class="status-dot"></span>
-                                                        <?php echo htmlspecialchars($row["appointment_status"]); ?>
-                                                    </span>
-                                                </td>
-
-                                                <td>
-
-                                                    <form action="" method="post" class="status-form">
-
-                                                        <input
-                                                            type="hidden"
-                                                            name="appointment_id"
-                                                            value="<?php echo $row["appointment_id"]; ?>"
-                                                        >
-
-                                                        <select name="appointment_status" class="form-select status-select" required>
-
-                                                            <option value="Pending"
-                                                                <?php if ($row["appointment_status"] === "Pending") echo "selected"; ?>>
-                                                                Pending
-                                                            </option>
-
-                                                            <option value="Confirmed"
-                                                                <?php if ($row["appointment_status"] === "Confirmed") echo "selected"; ?>>
-                                                                Confirmed
-                                                            </option>
-
-                                                            <option value="Cancelled"
-                                                                <?php if ($row["appointment_status"] === "Cancelled") echo "selected"; ?>>
-                                                                Cancelled
-                                                            </option>
-
-                                                            <option value="Completed"
-                                                                <?php if ($row["appointment_status"] === "Completed") echo "selected"; ?>>
-                                                                Completed
-                                                            </option>
-
-                                                        </select>
-
-                                                        <button type="submit" name="update_status" class="update-btn">
-                                                            <i class="fa-solid fa-rotate"></i>
-                                                            Update
-                                                        </button>
-
-                                                    </form>
-
-                                                </td>
-
-                                            </tr>
-
-                                        <?php } ?>
-
-                                    </tbody>
-
-                                </table>
-
+                            <div class="empty-icon">
+                                <i class="fa-regular fa-calendar-xmark"></i>
                             </div>
 
-                        <?php } else { ?>
+                            <h3>No Appointments Found</h3>
 
-                            <div class="empty-state">
+                            <p>You don't have any appointments yet. New appointments will appear here.</p>
 
-                                <div class="empty-icon">
-                                    <i class="fa-regular fa-calendar-xmark"></i>
-                                </div>
+                        </div>
 
-                                <h5>No Appointments Found</h5>
+                    <?php } ?>
 
-                                <p>
-                                    You don't have any appointments yet.
-                                    New appointments will appear here.
-                                </p>
-
-                            </div>
-
-                        <?php } ?>
-
-                    </div>
-
-                </section>
-
-                <footer class="dashboard-footer">
-                    <p>© <?php echo date("Y"); ?> VaxCare. Hospital Management System.</p>
-                    <p>Healthcare Management Portal</p>
-                </footer>
+                </div>
 
             </section>
 
         </main>
 
+        <footer class="app-footer">
+            &copy; <?php echo date("Y"); ?> VaccineCare. Hospital Management System.
+        </footer>
+
     </div>
 
+</div>
 
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-
-    <!-- MY JS -->
-    <script src="JS/hospital.js"></script>
+<script src="JS/hospital.js"></script>
 
 </body>
 </html>

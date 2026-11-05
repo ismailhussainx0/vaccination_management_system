@@ -1,4 +1,3 @@
-
 <?php
 include "parent_auth.php";
 include "../config/db_connection.php";
@@ -103,135 +102,72 @@ if (isset($_GET["child_id"])) {
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Edit Child | VaccineCare</title>
 
-    <link rel="stylesheet" href="CSS/edit-child.css">
-
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+    <link rel="stylesheet" href="CSS/parent-app.css">
 </head>
 
 <body>
 
-<div class="dashboard-layout">
+<div class="app">
 
-    <!-- Sidebar -->
-    <aside class="sidebar">
+    <?php $activePage = "dashboard"; include __DIR__ . "/includes/sidebar.php"; ?>
 
-        <div class="brand">
-            <div class="brand-icon">
-                <i class="fa-solid fa-heart-pulse"></i>
-            </div>
+    <div class="app-main">
 
-            <span>VaccineCare</span>
-        </div>
-
-        <div class="sidebar-section">
-
-            <p class="sidebar-heading">MENU</p>
-
-            <nav class="sidebar-nav">
-
-                <a href="dashboard.php" class="nav-link active">
-                    <i class="fa-solid fa-house"></i>
-                    <span>Dashboard</span>
-                </a>
-
-                <a href="add_child.php" class="nav-link">
-                    <i class="fa-solid fa-child"></i>
-                    <span>Add Child</span>
-                </a>
-
-                
-                <a href="book_appointment.php" class="nav-link">
-                <i class="fa-solid fa-calendar-check"></i>
-                <span>Book Appointment</span>
-                </a>    
-
-                                
-                <a href="logout.php" class="nav-link logout-link"
-                onclick="return confirm('Are you sure you want to logout?');">
-                    <i class="fa-solid fa-right-from-bracket"></i>
-                    <span>Logout</span>
-                </a>
-
-
-            </nav>
-
-        </div>
-
-        <div class="sidebar-bottom">
-
-            <div class="sidebar-help">
-                <i class="fa-solid fa-circle-question"></i>
-
-                <div>
-                    <strong>Need Help?</strong>
-                    <p>Contact support</p>
-                </div>
-            </div>
-
-        </div>
-
-    </aside>
-
-
-    <!-- Main Content -->
-    <main class="main-content">
-
-        <!-- Topbar -->
         <header class="topbar">
 
-            <div>
-                <p class="topbar-label">Parent Portal</p>
-                <h2>Edit Child</h2>
+            <div class="topbar-left">
+
+                <button type="button" class="icon-btn menu-btn" data-menu-toggle
+                        aria-label="Open menu" aria-controls="sidebar" aria-expanded="false">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+
+                <div class="topbar-title">
+                    <p>Parent Portal</p>
+                    <h2>Edit Child</h2>
+                </div>
+
             </div>
 
-            <div class="profile">
+            <div class="profile-chip">
+                <span class="avatar"><?php echo htmlspecialchars(strtoupper(substr($_SESSION["parent_name"], 0, 1))); ?></span>
 
-                <div class="profile-avatar">
-                    <i class="fa-solid fa-user"></i>
-                </div>
-
-                <div class="profile-info">
-                    <strong>
-                        <?php echo htmlspecialchars($_SESSION["parent_name"]); ?>
-                    </strong>
-
-                    <span>Parent Account</span>
-                </div>
-
+                <span class="profile-text">
+                    <strong><?php echo htmlspecialchars($_SESSION["parent_name"]); ?></strong>
+                    <small>Parent Account</small>
+                </span>
             </div>
 
         </header>
 
-
-        <!-- Page Content -->
-        <section class="page-content">
+        <main class="page">
 
             <?php if (isset($childNotFound)): ?>
 
-                <div class="not-found-card">
+                <div class="card not-found empty-state">
 
-                    <div class="not-found-icon">
+                    <div class="empty-icon">
                         <i class="fa-solid fa-child"></i>
                     </div>
 
-                    <h2>Child Not Found</h2>
+                    <h3>Child Not Found</h3>
 
-                    <p>
-                        This child does not exist or you do not have permission to edit this information.
-                    </p>
+                    <p>This child does not exist or you do not have permission to edit this information.</p>
 
-                    <a href="dashboard.php" class="back-button">
+                    <a href="dashboard.php" class="btn btn-primary">
                         <i class="fa-solid fa-arrow-left"></i>
                         Back to Dashboard
                     </a>
@@ -240,17 +176,15 @@ if (isset($_GET["child_id"])) {
 
             <?php else: ?>
 
-                <div class="page-heading">
+                <div class="page-head">
 
                     <div>
-                        <span class="eyebrow">CHILD MANAGEMENT</span>
-
+                        <span class="eyebrow">Child Management</span>
                         <h1>Edit Child Information</h1>
-
                         <p>Update your child's personal information below.</p>
                     </div>
 
-                    <a href="dashboard.php" class="back-button">
+                    <a href="dashboard.php" class="btn btn-ghost">
                         <i class="fa-solid fa-arrow-left"></i>
                         Back to Dashboard
                     </a>
@@ -258,10 +192,9 @@ if (isset($_GET["child_id"])) {
                 </div>
 
 
-                <!-- Form Card -->
-                <div class="form-card">
+                <div class="card form-card">
 
-                    <div class="form-card-header">
+                    <div class="form-card-head">
 
                         <div class="form-icon">
                             <i class="fa-solid fa-user-pen"></i>
@@ -279,21 +212,19 @@ if (isset($_GET["child_id"])) {
 
                         <div class="alert <?php echo $messageType; ?>">
                             <i class="fa-solid fa-circle-exclamation"></i>
-
                             <?php echo htmlspecialchars($message); ?>
                         </div>
 
                     <?php endif; ?>
 
 
-                    <form action="" method="POST">
+                    <form action="" method="POST" class="form-body">
 
                         <div class="form-group">
 
                             <label for="child_name">Child Name</label>
 
                             <div class="input-wrapper">
-
                                 <i class="fa-solid fa-user"></i>
 
                                 <input
@@ -304,7 +235,6 @@ if (isset($_GET["child_id"])) {
                                     placeholder="Enter child's full name"
                                     required
                                 >
-
                             </div>
 
                         </div>
@@ -315,7 +245,6 @@ if (isset($_GET["child_id"])) {
                             <label for="date_of_birth">Date of Birth</label>
 
                             <div class="input-wrapper">
-
                                 <i class="fa-solid fa-calendar-days"></i>
 
                                 <input
@@ -326,7 +255,6 @@ if (isset($_GET["child_id"])) {
                                     value="<?php echo htmlspecialchars($displayDate); ?>"
                                     required
                                 >
-
                             </div>
 
                         </div>
@@ -334,18 +262,15 @@ if (isset($_GET["child_id"])) {
 
                         <div class="form-note">
                             <i class="fa-solid fa-circle-info"></i>
-
                             Make sure your child's information is accurate.
                         </div>
 
 
                         <div class="form-actions">
 
-                            <a href="dashboard.php" class="cancel-button">
-                                Cancel
-                            </a>
+                            <a href="dashboard.php" class="btn btn-ghost">Cancel</a>
 
-                            <button type="submit" name="update_child" class="submit-button">
+                            <button type="submit" name="update_child" class="btn btn-primary">
                                 <i class="fa-solid fa-floppy-disk"></i>
                                 Save Changes
                             </button>
@@ -358,11 +283,17 @@ if (isset($_GET["child_id"])) {
 
             <?php endif; ?>
 
-        </section>
+        </main>
 
-    </main>
+        <footer class="app-footer">
+            &copy; 2026 VaccineCare. All rights reserved.
+        </footer>
+
+    </div>
 
 </div>
+
+<script src="JS/parent.js"></script>
 
 </body>
 </html>

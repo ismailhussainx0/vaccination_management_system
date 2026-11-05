@@ -122,6 +122,11 @@ $totalCompleted = $completedData["completed_appointments"];
                     <span>Dashboard</span>
                 </a>
 
+                <a href="manage_hospitals.php" class="menu-link">
+                    <i class="fa-solid fa-hospital"></i>
+                    Manage Hospitals
+                </a>
+
             </div>
 
             <div class="sidebar-bottom">
