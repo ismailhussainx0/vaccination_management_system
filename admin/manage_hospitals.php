@@ -153,10 +153,18 @@ if (!$result) {
                                                 Edit
                                             </a>
 
-                                            <a href="delete_hospital.php?id=<?php echo $hospital["hospital_id"]; ?>" class="delete-btn">
-                                                <i class="fa-solid fa-trash"></i>
-                                                Delete
-                                            </a>
+                                        <form action="delete_hospital.php" method="POST"
+                                        onsubmit="return confirm('Are you sure you want to delete this hospital?');">
+
+                                        <input type="hidden" name="hospital_id"
+                                            value="<?php echo $hospital["hospital_id"]; ?>">
+
+                                        <button type="submit" class="delete-btn">
+                                            <i class="fa-solid fa-trash"></i>
+                                            Delete
+                                        </button>
+
+                                    </form>
 
                                         </td>
 

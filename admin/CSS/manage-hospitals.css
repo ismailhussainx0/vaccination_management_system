@@ -266,3 +266,76 @@ td {
     }
 }
 
+
+
+
+/* Delete Hospital Button */
+.delete-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    background-color: #dc3545;
+    color: #ffffff;
+    border: none;
+    padding: 9px 14px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 500;
+    text-decoration: none;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+
+.delete-btn:hover {
+    background-color: #b02a37;
+}
+
+/* Delete Form */
+form {
+    margin: 0;
+}
+
+/* Delete Error Message */
+.error-message {
+    color: #b42318;
+    background-color: #fee4e2;
+    border: 1px solid #fecdca;
+    padding: 14px;
+    border-radius: 7px;
+    font-size: 14px;
+    margin: 20px 0;
+    line-height: 1.5;
+}
+
+/* Back Button */
+.btn-secondary {
+    display: inline-block;
+    background-color: #64748b;
+    color: white;
+    padding: 10px 16px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 14px;
+    transition: 0.3s ease;
+}
+
+.btn-secondary:hover {
+    background-color: #475569;
+}
+
+/* Delete Page Container */
+.hospital-form {
+    max-width: 550px;
+    margin: 60px auto;
+    padding: 30px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+}
+
+.hospital-form h2 {
+    color: #172554;
+    font-size: 22px;
+    margin-bottom: 15px;
+}
