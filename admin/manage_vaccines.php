@@ -78,4 +78,3 @@ if (!$result) {
 </main>
 </body>
 </html>
-<?php mysqli_free_result($result); ?>
