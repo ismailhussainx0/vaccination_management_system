@@ -163,7 +163,8 @@ try {
         JOIN vaccines
         ON appointments.vaccine_id = vaccines.vaccine_id
 
-        WHERE appointments.hospital_id = ?";
+        WHERE appointments.hospital_id = ?
+        AND appointments.appointment_status = 'Confirmed'";
 
     $appointmentStmt = mysqli_prepare($connect, $appointmentSql);
 

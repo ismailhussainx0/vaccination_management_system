@@ -29,7 +29,7 @@ $selectAppointments = "SELECT
                     ON appointments.vaccine_id = vaccines.vaccine_id
                     
                     WHERE appointments.appointment_status = 'Pending'
-                    ";
+                    ORDER BY appointments.appointment_id  DESC";
 
 $result = mysqli_query($connect, $selectAppointments);
 
@@ -50,7 +50,7 @@ if(!$result){
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Manage Appointments</title>
-    <link rel="stylesheet" href="CSS/manage_appointments.css">
+    <link rel="stylesheet" href="CSS/manage_appointment.css">
 </head>
 <body>
 
