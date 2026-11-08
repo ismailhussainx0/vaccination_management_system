@@ -5,145 +5,121 @@ include "hospital_auth.php";
 
 date_default_timezone_set("Asia/Karachi");
 
-// STEP 1: HANDLE APPOINTMENT STATUS UPDATE
+// STEP 1: HANDLE HOSPITAL APPOINTMENT STATUS UPDATE
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
-    if (isset($_POST["appointment_id"], $_POST["appointment_status"])) {
+    if (!isset($_POST["appointment_id"], $_POST["appointment_status"])) {
+        exit("Appointment details are missing.");
+    }
 
-        $hospitalId = $_SESSION["hospitalId"];
-        $appointmentId = filter_var($_POST["appointment_id"], FILTER_VALIDATE_INT);
-        $updatedStatus = $_POST["appointment_status"];
+    $hospitalId = (int) $_SESSION["hospitalId"];
+    $appointmentId = filter_var($_POST["appointment_id"], FILTER_VALIDATE_INT);
+    $updatedStatus = $_POST["appointment_status"];
 
-        // Validate appointment ID
-        if ($appointmentId === false || $appointmentId <= 0) {
-            exit("Invalid Appointment ID");
+    // Validate appointment ID
+    if ($appointmentId === false || $appointmentId <= 0) {
+        exit("Invalid Appointment ID.");
+    }
+
+    // Hospital can only cancel or complete an already approved appointment.
+    $allowedStatuses = ["Cancelled", "Completed"];
+
+    if (!in_array($updatedStatus, $allowedStatuses, true)) {
+        exit("Invalid status selected.");
+    }
+
+    try {
+
+        mysqli_begin_transaction($connect);
+
+        // STEP 2: Update only this hospital's Confirmed appointment.
+        // This prevents the hospital from changing Pending or other hospitals' appointments.
+
+        $updateSql = "UPDATE appointments
+                      SET appointment_status = ?
+                      WHERE appointment_id = ?
+                      AND hospital_id = ?
+                      AND appointment_status = 'Confirmed'";
+
+        $updateStmt = mysqli_prepare($connect, $updateSql);
+
+        $updateStmt->bind_param(
+            "sii",
+            $updatedStatus,
+            $appointmentId,
+            $hospitalId
+        );
+
+        $updateStmt->execute();
+
+        // Exactly one Confirmed appointment must have been updated.
+        if ($updateStmt->affected_rows !== 1) {
+            mysqli_rollback($connect);
+            $updateStmt->close();
+            exit("Appointment not found, not approved, or already processed.");
         }
 
-        // Validate appointment status
-        $allowedStatuses = ["Pending", "Confirmed", "Cancelled", "Completed"];
+        $updateStmt->close();
 
-        if (!in_array($updatedStatus, $allowedStatuses, true)) {
-            exit("Wrong Status Chosen");
-        }
+        // STEP 3: Create a vaccination record only when Hospital marks it Completed.
 
-        try {
+        if ($updatedStatus === "Completed") {
 
-            // STEP 2: UPDATE APPOINTMENT STATUS
+            // Check whether a vaccination record already exists.
+            $checkSql = "SELECT record_id
+                         FROM vaccination_record
+                         WHERE appointment_id = ?";
 
-            $updateSql = "UPDATE appointments
-                          SET appointment_status = ?
-                          WHERE appointment_id = ?
-                          AND hospital_id = ?";
+            $checkStmt = mysqli_prepare($connect, $checkSql);
+            $checkStmt->bind_param("i", $appointmentId);
+            $checkStmt->execute();
 
-            $updateStmt = mysqli_prepare($connect, $updateSql);
+            $checkResult = $checkStmt->get_result();
 
-            $updateStmt->bind_param(
-                "sii",
-                $updatedStatus,
-                $appointmentId,
-                $hospitalId
-            );
+            if (mysqli_num_rows($checkResult) === 0) {
 
-            $updateStmt->execute();
+                $vaccinationDate = date("Y-m-d");
+                $vaccinationStatus = "Vaccinated";
 
-            // STEP 3: CREATE VACCINATION RECORD IF COMPLETED
+                $insertSql = "INSERT INTO vaccination_record
+                              (appointment_id, vaccination_status, vaccination_date)
+                              VALUES (?, ?, ?)";
 
-            if ($updatedStatus === "Completed") {
+                $recordStmt = mysqli_prepare($connect, $insertSql);
 
-                // Verify appointment belongs to logged-in hospital
-                // and its status is Completed
-
-                $verifySql = "SELECT appointment_id
-                              FROM appointments
-                              WHERE appointment_id = ?
-                              AND hospital_id = ?
-                              AND appointment_status = 'Completed'";
-
-                $verifyStmt = mysqli_prepare($connect, $verifySql);
-
-                $verifyStmt->bind_param(
-                    "ii",
+                $recordStmt->bind_param(
+                    "iss",
                     $appointmentId,
-                    $hospitalId
+                    $vaccinationStatus,
+                    $vaccinationDate
                 );
 
-                $verifyStmt->execute();
-
-                $verifyResult = $verifyStmt->get_result();
-
-                if (mysqli_num_rows($verifyResult) > 0) {
-
-                    // Check whether vaccination record already exists
-
-                    $checkSql = "SELECT record_id
-                                 FROM vaccination_record
-                                 WHERE appointment_id = ?";
-
-                    $checkStmt = mysqli_prepare($connect, $checkSql);
-
-                    $checkStmt->bind_param("i", $appointmentId);
-
-                    $checkStmt->execute();
-
-                    $checkResult = $checkStmt->get_result();
-
-                    // Insert only if record does not exist
-
-                    if (mysqli_num_rows($checkResult) === 0) {
-
-                        $vaccinationDate = date("Y-m-d");
-                        $vaccinationStatus = "Vaccinated";
-
-                        $vaccinationRecordSql = "INSERT INTO vaccination_record
-                        (appointment_id, vaccination_status, vaccination_date)
-                        VALUES (?, ?, ?)";
-
-                        $recordStmt = mysqli_prepare(
-                            $connect,
-                            $vaccinationRecordSql
-                        );
-
-                        $recordStmt->bind_param(
-                            "iss",
-                            $appointmentId,
-                            $vaccinationStatus,
-                            $vaccinationDate
-                        );
-
-                        $recordStmt->execute();
-
-                        $recordStmt->close();
-                    }
-
-                    $checkStmt->close();
-                }
-
-                $verifyStmt->close();
+                $recordStmt->execute();
+                $recordStmt->close();
             }
 
-            $updateStmt->close();
-
-            // STEP 4: REDIRECT AFTER POST
-
-            header("Location: hospital_dashboard.php");
-            exit;
-
-        } catch (mysqli_sql_exception $error) {
-
-            echo "Something Went Wrong!";
-
+            $checkStmt->close();
         }
 
-    } else {
+        // Save the status update and, if completed, its vaccination record.
+        mysqli_commit($connect);
 
-        echo "Values are not set properly";
+        // STEP 4: Redirect after POST so refreshing does not submit the form again.
+        header("Location: hospital_dashboard.php");
+        exit;
+
+    } catch (mysqli_sql_exception $error) {
+
+        mysqli_rollback($connect);
+        error_log($error->getMessage());
+        exit("Something went wrong while updating the appointment.");
 
     }
 }
 
 
-// STEP 5: FETCH APPOINTMENTS FOR DASHBOARD
+// STEP 5: FETCH ONLY THIS HOSPITAL'S CONFIRMED APPOINTMENTS
 
 try {
 
@@ -179,7 +155,8 @@ try {
 
 } catch (mysqli_sql_exception $error) {
 
-    exit("Something Went Wrong!");
+    error_log($error->getMessage());
+    exit("Unable to load appointments right now.");
 
 }
 
@@ -409,27 +386,9 @@ try {
                                                     >
 
                                                     <select name="appointment_status" class="status-select" required>
-
-                                                        <option value="Pending"
-                                                            <?php if ($row["appointment_status"] === "Pending") echo "selected"; ?>>
-                                                            Pending
-                                                        </option>
-
-                                                        <option value="Confirmed"
-                                                            <?php if ($row["appointment_status"] === "Confirmed") echo "selected"; ?>>
-                                                            Confirmed
-                                                        </option>
-
-                                                        <option value="Cancelled"
-                                                            <?php if ($row["appointment_status"] === "Cancelled") echo "selected"; ?>>
-                                                            Cancelled
-                                                        </option>
-
-                                                        <option value="Completed"
-                                                            <?php if ($row["appointment_status"] === "Completed") echo "selected"; ?>>
-                                                            Completed
-                                                        </option>
-
+                                                        <option value="" selected disabled>Choose status</option>
+                                                        <option value="Completed">Completed</option>
+                                                        <option value="Cancelled">Cancelled</option>
                                                     </select>
 
                                                     <button type="submit" name="update_status" class="update-btn">
