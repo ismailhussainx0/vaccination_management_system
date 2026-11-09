@@ -448,33 +448,6 @@
 
                     </div>
 
-
-                    <!-- ADMIN -->
-
-                    <div class="role-card">
-
-                        <div class="role-icon">
-                            <i class="fa-solid fa-user-shield"></i>
-                        </div>
-
-                        <h3>Admin Portal</h3>
-
-                        <p>
-                            Manage hospitals, vaccines, and
-                            appointment approval requests.
-                        </p>
-
-                        <div class="role-actions">
-
-                            <a href="admin/admin_login.php" class="btn btn-primary">
-                                Admin Login
-                                <i class="fa-solid fa-arrow-right"></i>
-                            </a>
-
-                        </div>
-
-                    </div>
-
                 </div>
 
             </div>
@@ -531,6 +504,9 @@
 
                 <p>
                     &copy; 2026 VaccineCare. All rights reserved.
+                    <a href="admin/admin_login.php" class="footer-link">
+                        <i class="fa-solid fa-lock"></i> Admin
+                    </a>
                 </p>
 
             </div>
