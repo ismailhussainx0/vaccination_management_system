@@ -1,4 +1,3 @@
-
 <?php
 
 include "../config/db_connection.php";
@@ -91,160 +90,197 @@ if (isset($_POST["add_hospital"])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Add Hospital | Admin Panel</title>
-
-    <link rel="stylesheet" href="CSS/add-hospital.css">
+    <title>Add Hospital | VaccineCare Admin</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="CSS/admin-app.css">
 </head>
 
 <body>
 
-    <div class="dashboard-container">
+<div class="app">
 
-        <!-- SIDEBAR -->
-        <aside class="sidebar">
+    <?php $activePage = "hospitals"; $adminBase = ""; include __DIR__ . "/includes/sidebar.php"; ?>
 
-            <div class="sidebar-logo">
-                <i class="fa-solid fa-shield-heart"></i>
-                <h2>VaxCare Admin</h2>
+    <div class="app-main">
+
+        <header class="topbar">
+
+            <div class="topbar-left">
+
+                <button type="button" class="icon-btn menu-btn" data-menu-toggle
+                        aria-label="Open menu" aria-controls="sidebar" aria-expanded="false">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+
+                <div class="topbar-title">
+                    <p>Admin Panel</p>
+                    <h2>Add Hospital</h2>
+                </div>
+
             </div>
 
-            <nav class="sidebar-nav">
+            <div class="profile-chip">
+                <span class="avatar"><?php echo htmlspecialchars(strtoupper(substr($_SESSION["adminName"], 0, 1))); ?></span>
 
-                <a href="dashboard.php">
-                    <i class="fa-solid fa-chart-line"></i>
-                    Dashboard
-                </a>
+                <span class="profile-text">
+                    <strong><?php echo htmlspecialchars($_SESSION["adminName"]); ?></strong>
+                    <small>Administrator</small>
+                </span>
+            </div>
 
-                <a href="manage_hospitals.php" class="active">
-                    <i class="fa-solid fa-hospital"></i>
-                    Manage Hospitals
-                </a>
+        </header>
 
-                <a href="manage_vaccines.php">
-                    <i class="fa-solid fa-syringe"></i>
-                    Manage Vaccines
-                </a>
+        <main class="page">
 
-                <a href="admin_logout.php" class="logout-link">
-                    <i class="fa-solid fa-right-from-bracket"></i>
-                    Logout
-                </a>
+            <div class="page-head">
 
-            </nav>
-
-        </aside>
-
-
-        <!-- MAIN CONTENT -->
-        <main class="main-content">
-
-            <header class="topbar">
                 <div>
+                    <span class="eyebrow">Hospital Management</span>
                     <h1>Add Hospital</h1>
                     <p>Register a new hospital in the system.</p>
                 </div>
 
-                <div class="admin-info">
-                    <i class="fa-solid fa-user-shield"></i>
-                    <span>
-                        <?php echo htmlspecialchars($_SESSION["adminName"]); ?>
-                    </span>
-                </div>
-            </header>
+                <a href="manage_hospitals.php" class="btn btn-ghost">
+                    <i class="fa-solid fa-arrow-left"></i>
+                    Back to Hospitals
+                </a>
+
+            </div>
 
 
-            <!-- FORM SECTION -->
-            <section class="content-section">
+            <div class="card form-card wide">
 
-                <div class="section-header">
+                <div class="form-card-head">
+
+                    <div class="form-icon">
+                        <i class="fa-solid fa-hospital"></i>
+                    </div>
+
                     <div>
-                        <h2>Hospital Details</h2>
+                        <h3>Hospital Details</h3>
                         <p>Enter the hospital information below.</p>
                     </div>
+
                 </div>
 
 
                 <?php if (!empty($error)) { ?>
-                    <div class="error-message">
+
+                    <div class="alert error">
+                        <i class="fa-solid fa-circle-exclamation"></i>
                         <?php echo htmlspecialchars($error); ?>
                     </div>
+
                 <?php } ?>
 
 
-                <form action="" method="POST" class="hospital-form">
+                <form action="" method="POST" class="form-body">
 
                     <div class="form-group">
+
                         <label for="hospital_name">Hospital Name</label>
-                        <input
-                            type="text"
-                            id="hospital_name"
-                            name="hospital_name"
-                            value="<?php echo htmlspecialchars($_POST["hospital_name"] ?? ""); ?>"
-                            required
-                        >
+
+                        <div class="input-wrapper">
+                            <i class="fa-solid fa-hospital"></i>
+
+                            <input
+                                type="text"
+                                id="hospital_name"
+                                name="hospital_name"
+                                value="<?php echo htmlspecialchars($_POST["hospital_name"] ?? ""); ?>"
+                                required
+                            >
+                        </div>
+
                     </div>
 
 
                     <div class="form-group">
+
                         <label for="hospital_address">Hospital Address</label>
-                        <textarea
-                            id="hospital_address"
-                            name="hospital_address"
-                            rows="3"
-                            required
-                        ><?php echo htmlspecialchars($_POST["hospital_address"] ?? ""); ?></textarea>
+
+                        <div class="input-wrapper textarea-wrapper">
+                            <i class="fa-solid fa-location-dot"></i>
+
+                            <textarea
+                                id="hospital_address"
+                                name="hospital_address"
+                                rows="3"
+                                required
+                            ><?php echo htmlspecialchars($_POST["hospital_address"] ?? ""); ?></textarea>
+                        </div>
+
                     </div>
 
 
                     <div class="form-group">
+
                         <label for="hospital_email">Hospital Email</label>
-                        <input
-                            type="email"
-                            id="hospital_email"
-                            name="hospital_email"
-                            value="<?php echo htmlspecialchars($_POST["hospital_email"] ?? ""); ?>"
-                            required
-                        >
+
+                        <div class="input-wrapper">
+                            <i class="fa-solid fa-envelope"></i>
+
+                            <input
+                                type="email"
+                                id="hospital_email"
+                                name="hospital_email"
+                                value="<?php echo htmlspecialchars($_POST["hospital_email"] ?? ""); ?>"
+                                required
+                            >
+                        </div>
+
                     </div>
 
 
                     <div class="form-group">
+
                         <label for="hospital_phone">Hospital Phone</label>
-                        <input
-                            type="text"
-                            id="hospital_phone"
-                            name="hospital_phone"
-                            value="<?php echo htmlspecialchars($_POST["hospital_phone"] ?? ""); ?>"
-                            required
-                        >
+
+                        <div class="input-wrapper">
+                            <i class="fa-solid fa-phone"></i>
+
+                            <input
+                                type="text"
+                                id="hospital_phone"
+                                name="hospital_phone"
+                                value="<?php echo htmlspecialchars($_POST["hospital_phone"] ?? ""); ?>"
+                                required
+                            >
+                        </div>
+
                     </div>
 
 
                     <div class="form-group">
+
                         <label for="hospital_password">Hospital Password</label>
-                        <input
-                            type="password"
-                            id="hospital_password"
-                            name="hospital_password"
-                            required
-                        >
+
+                        <div class="input-wrapper">
+                            <i class="fa-solid fa-lock"></i>
+
+                            <input
+                                type="password"
+                                id="hospital_password"
+                                name="hospital_password"
+                                placeholder="Enter a password for this hospital"
+                                required
+                            >
+                        </div>
+
                     </div>
 
 
                     <div class="form-actions">
 
-                        <a href="manage_hospitals.php" class="cancel-btn">
-                            Cancel
-                        </a>
+                        <a href="manage_hospitals.php" class="btn btn-ghost">Cancel</a>
 
-                        <button type="submit" name="add_hospital" class="submit-btn">
+                        <button type="submit" name="add_hospital" class="btn btn-primary">
                             <i class="fa-solid fa-plus"></i>
                             Add Hospital
                         </button>
@@ -253,11 +289,19 @@ if (isset($_POST["add_hospital"])) {
 
                 </form>
 
-            </section>
+            </div>
 
         </main>
 
+        <footer class="app-footer">
+            &copy; 2026 VaccineCare. Vaccination Management System.
+        </footer>
+
     </div>
+
+</div>
+
+<script src="JS/admin.js"></script>
 
 </body>
 </html>

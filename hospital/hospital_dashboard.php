@@ -217,6 +217,11 @@ try {
                 <span>Appointments</span>
             </a>
 
+            <a href="logout.php" class="nav-link logout-link">
+                <i class="fa-solid fa-right-from-bracket"></i>
+                <span>Logout</span>
+            </a>
+
         </nav>
 
         <div class="sidebar-foot">
@@ -255,8 +260,8 @@ try {
                 <span class="avatar"><i class="fa-solid fa-hospital"></i></span>
 
                 <span class="profile-text">
-                    <strong><?php echo date("d M Y"); ?></strong>
-                    <small>Today</small>
+                    <strong><?php echo htmlspecialchars($_SESSION["hospitalName"] ?? "Hospital Account"); ?></strong>
+                    <small><?php echo date("d M Y"); ?></small>
                 </span>
             </div>
 

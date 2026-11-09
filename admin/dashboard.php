@@ -87,258 +87,230 @@ $totalCompleted = $completedData["completed_appointments"];
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Admin Dashboard | VMS</title>
+    <title>Admin Dashboard | VaccineCare Admin</title>
 
-    <link rel="stylesheet" href="CSS/admin.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-    <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+    <link rel="stylesheet" href="CSS/admin-app.css">
 </head>
 
 <body>
 
-    <div class="dashboard-container">
+<div class="app">
 
-        <!-- SIDEBAR -->
-        <aside class="sidebar">
+    <?php $activePage = "dashboard"; $adminBase = ""; include __DIR__ . "/includes/sidebar.php"; ?>
 
-            <div class="sidebar-header">
-                <div class="logo-icon">
-                    <i class="fa-solid fa-hospital"></i>
+    <div class="app-main">
+
+        <header class="topbar">
+
+            <div class="topbar-left">
+
+                <button type="button" class="icon-btn menu-btn" data-menu-toggle
+                        aria-label="Open menu" aria-controls="sidebar" aria-expanded="false">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+
+                <div class="topbar-title">
+                    <p>Admin Panel</p>
+                    <h2>Dashboard</h2>
                 </div>
+
+            </div>
+
+            <div class="profile-chip">
+                <span class="avatar"><?php echo htmlspecialchars(strtoupper(substr($_SESSION["adminName"], 0, 1))); ?></span>
+
+                <span class="profile-text">
+                    <strong><?php echo htmlspecialchars($_SESSION["adminName"]); ?></strong>
+                    <small>Administrator</small>
+                </span>
+            </div>
+
+        </header>
+
+        <main class="page">
+
+            <!-- WELCOME -->
+            <div class="welcome">
 
                 <div>
-                    <h2>VMS Admin</h2>
-                    <p>Management Panel</p>
-                </div>
-            </div>
+                    <span class="eyebrow">Admin Dashboard</span>
 
-            <div class="sidebar-menu">
+                    <h1>Welcome, <?php echo htmlspecialchars($_SESSION["adminName"]); ?>!</h1>
 
-                <p class="menu-heading">MAIN MENU</p>
-
-                <a href="dashboard.php" class="menu-link active">
-                    <i class="fa-solid fa-house"></i>
-                    <span>Dashboard</span>
-                </a>
-
-                <a href="manage_hospitals.php" class="menu-link">
-                    <i class="fa-solid fa-hospital"></i>
-                    Manage Hospitals
-                </a>
-
-                <a href="manage_vaccines.php" class="menu-link">
-                    <i class="fa-solid fa-syringe"></i>
-                    Manage Vaccines
-                </a>
-
-            </div>
-
-            <div class="sidebar-bottom">
-
-                <div class="sidebar-admin">
-                    <div class="admin-avatar">
-                        <i class="fa-solid fa-user-shield"></i>
-                    </div>
-
-                    <div class="admin-details">
-                        <h4><?php echo htmlspecialchars($_SESSION["adminName"]); ?></h4>
-                        <p>Administrator</p>
-                    </div>
-                </div>
-
-                <a href="admin_logout.php" class="logout-link">
-                    <i class="fa-solid fa-right-from-bracket"></i>
-                    <span>Logout</span>
-                </a>
-
-            </div>
-
-        </aside>
-
-
-        <!-- MAIN CONTENT -->
-        <main class="main-content">
-
-            <!-- TOPBAR -->
-            <header class="topbar">
-
-                <div class="page-heading">
-                    <h1>Dashboard</h1>
                     <p>Overview of your vaccination management system.</p>
                 </div>
 
-                <div class="topbar-profile">
-                    <div class="profile-icon">
-                        <i class="fa-solid fa-user-shield"></i>
-                    </div>
-
-                    <div>
-                        <h4><?php echo htmlspecialchars($_SESSION["adminName"]); ?></h4>
-                        <p>Admin</p>
-                    </div>
+                <div class="welcome-icon">
+                    <i class="fa-solid fa-user-shield"></i>
                 </div>
 
-            </header>
+            </div>
 
 
-            <!-- DASHBOARD CONTENT -->
-            <section class="dashboard-content">
+            <!-- QUICK ACTIONS -->
+            <div class="quick-grid">
 
-                <div class="section-heading">
-                    <div>
-                        <h2>System Overview</h2>
-                        <p>Here is your system's current summary.</p>
-                    </div>
+                <a href="manage_hospitals.php" class="quick-card">
+                    <span class="quick-icon"><i class="fa-solid fa-hospital"></i></span>
+                    <strong>Manage Hospitals</strong>
+                    <span class="sub">Add, edit or remove</span>
+                </a>
+
+                <a href="manage_vaccines.php" class="quick-card">
+                    <span class="quick-icon"><i class="fa-solid fa-syringe"></i></span>
+                    <strong>Manage Vaccines</strong>
+                    <span class="sub">Maintain vaccine list</span>
+                </a>
+
+                <a href="manage_appointments/manage_appointment.php" class="quick-card">
+                    <span class="quick-icon"><i class="fa-solid fa-calendar-check"></i></span>
+                    <strong>Manage Appointments</strong>
+                    <span class="sub">Approve or reject requests</span>
+                </a>
+
+                <a href="add_hospital.php" class="quick-card">
+                    <span class="quick-icon"><i class="fa-solid fa-plus"></i></span>
+                    <strong>Add Hospital</strong>
+                    <span class="sub">Register a new hospital</span>
+                </a>
+
+            </div>
+
+
+            <!-- SYSTEM OVERVIEW -->
+            <div class="section-head">
+                <div>
+                    <h2>System Overview</h2>
+                    <p>Here is your system's current summary.</p>
                 </div>
+            </div>
 
+            <div class="stats-grid">
 
-                <!-- STATISTICS CARDS -->
-                <div class="stats-grid">
+                <div class="stat-card">
 
-                    <!-- PARENTS -->
-                    <div class="stat-card">
-
-                        <div class="stat-top">
-                            <div class="stat-icon parents-icon">
-                                <i class="fa-solid fa-users"></i>
-                            </div>
-
-                            <span class="stat-label">Registered</span>
+                    <div class="stat-top">
+                        <div class="stat-icon icon-teal">
+                            <i class="fa-solid fa-users"></i>
                         </div>
 
-                        <div class="stat-info">
-                            <p>Total Parents</p>
-                            <h3><?php echo $totalParents; ?></h3>
-                        </div>
-
+                        <span class="stat-tag">Registered</span>
                     </div>
 
-
-                    <!-- CHILDREN -->
-                    <div class="stat-card">
-
-                        <div class="stat-top">
-                            <div class="stat-icon children-icon">
-                                <i class="fa-solid fa-child-reaching"></i>
-                            </div>
-
-                            <span class="stat-label">Registered</span>
-                        </div>
-
-                        <div class="stat-info">
-                            <p>Total Children</p>
-                            <h3><?php echo $totalChildren; ?></h3>
-                        </div>
-
-                    </div>
-
-
-                    <!-- HOSPITALS -->
-                    <div class="stat-card">
-
-                        <div class="stat-top">
-                            <div class="stat-icon hospitals-icon">
-                                <i class="fa-solid fa-hospital"></i>
-                            </div>
-
-                            <span class="stat-label">Registered</span>
-                        </div>
-
-                        <div class="stat-info">
-                            <p>Total Hospitals</p>
-                            <h3><?php echo $totalHospitals; ?></h3>
-                        </div>
-
-                    </div>
-
-
-                    <!-- VACCINES -->
-                    <div class="stat-card">
-
-                        <div class="stat-top">
-                            <div class="stat-icon vaccines-icon">
-                                <i class="fa-solid fa-syringe"></i>
-                            </div>
-
-                            <span class="stat-label">Available</span>
-                        </div>
-
-                        <div class="stat-info">
-                            <p>Total Vaccines</p>
-                            <h3><?php echo $totalVaccines; ?></h3>
-                        </div>
-
-                    </div>
-
-
-                    <!-- APPOINTMENTS -->
-                    <div class="stat-card">
-
-                        <div class="stat-top">
-                            <div class="stat-icon appointments-icon">
-                                <i class="fa-solid fa-calendar-check"></i>
-                            </div>
-
-                            <span class="stat-label">Overall</span>
-                        </div>
-
-                        <div class="stat-info">
-                            <p>Total Appointments</p>
-                            <h3><?php echo $totalAppointments; ?></h3>
-                        </div>
-
-                    </div>
-
-
-                    <!-- PENDING -->
-                    <div class="stat-card">
-
-                        <div class="stat-top">
-                            <div class="stat-icon pending-icon">
-                                <i class="fa-solid fa-clock"></i>
-                            </div>
-
-                            <span class="stat-label">Awaiting</span>
-                        </div>
-
-                        <div class="stat-info">
-                            <p>Pending Appointments</p>
-                            <h3><?php echo $totalPending; ?></h3>
-                        </div>
-
-                    </div>
-
-
-                    <!-- COMPLETED -->
-                    <div class="stat-card">
-
-                        <div class="stat-top">
-                            <div class="stat-icon completed-icon">
-                                <i class="fa-solid fa-circle-check"></i>
-                            </div>
-
-                            <span class="stat-label">Finished</span>
-                        </div>
-
-                        <div class="stat-info">
-                            <p>Completed Appointments</p>
-                            <h3><?php echo $totalCompleted; ?></h3>
-                        </div>
-
-                    </div>
+                    <p>Total Parents</p>
+                    <h3><?php echo $totalParents; ?></h3>
 
                 </div>
 
-            </section>
+                <div class="stat-card">
 
-            <footer class="dashboard-footer">
-                Vaccination Management System &copy; 2026
-            </footer>
+                    <div class="stat-top">
+                        <div class="stat-icon icon-blue">
+                            <i class="fa-solid fa-child-reaching"></i>
+                        </div>
+
+                        <span class="stat-tag">Registered</span>
+                    </div>
+
+                    <p>Total Children</p>
+                    <h3><?php echo $totalChildren; ?></h3>
+
+                </div>
+
+                <div class="stat-card">
+
+                    <div class="stat-top">
+                        <div class="stat-icon icon-purple">
+                            <i class="fa-solid fa-hospital"></i>
+                        </div>
+
+                        <span class="stat-tag">Registered</span>
+                    </div>
+
+                    <p>Total Hospitals</p>
+                    <h3><?php echo $totalHospitals; ?></h3>
+
+                </div>
+
+                <div class="stat-card">
+
+                    <div class="stat-top">
+                        <div class="stat-icon icon-rose">
+                            <i class="fa-solid fa-syringe"></i>
+                        </div>
+
+                        <span class="stat-tag">Available</span>
+                    </div>
+
+                    <p>Total Vaccines</p>
+                    <h3><?php echo $totalVaccines; ?></h3>
+
+                </div>
+
+                <div class="stat-card">
+
+                    <div class="stat-top">
+                        <div class="stat-icon icon-slate">
+                            <i class="fa-solid fa-calendar-check"></i>
+                        </div>
+
+                        <span class="stat-tag">Overall</span>
+                    </div>
+
+                    <p>Total Appointments</p>
+                    <h3><?php echo $totalAppointments; ?></h3>
+
+                </div>
+
+                <div class="stat-card">
+
+                    <div class="stat-top">
+                        <div class="stat-icon icon-amber">
+                            <i class="fa-solid fa-clock"></i>
+                        </div>
+
+                        <span class="stat-tag">Awaiting</span>
+                    </div>
+
+                    <p>Pending Appointments</p>
+                    <h3><?php echo $totalPending; ?></h3>
+
+                </div>
+
+                <div class="stat-card">
+
+                    <div class="stat-top">
+                        <div class="stat-icon icon-green">
+                            <i class="fa-solid fa-circle-check"></i>
+                        </div>
+
+                        <span class="stat-tag">Finished</span>
+                    </div>
+
+                    <p>Completed Appointments</p>
+                    <h3><?php echo $totalCompleted; ?></h3>
+
+                </div>
+
+            </div>
 
         </main>
 
+        <footer class="app-footer">
+            &copy; 2026 VaccineCare. Vaccination Management System.
+        </footer>
+
     </div>
+
+</div>
+
+<script src="JS/admin.js"></script>
 
 </body>
 </html>

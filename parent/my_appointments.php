@@ -23,7 +23,8 @@ $showAppointmentsSql = "SELECT
                         JOIN hospital
                         ON appointments.hospital_id = hospital.hospital_id
 
-                        WHERE child.parent_id = ?";
+                        WHERE child.parent_id = ?
+                        ORDER BY appointments.appointment_id DESC";
 
 $showAppointmentStmt = mysqli_prepare($connect, $showAppointmentsSql);
 $showAppointmentStmt->bind_param("i", $_SESSION["parent_id"]);
@@ -207,11 +208,25 @@ function getStatusClass($status) {
                                         </td>
 
                                         <td data-label="Date">
-                                            <?php echo date("d M Y", strtotime($row["appointment_date"])); ?>
+                                            <?php
+                                            $appointmentDateTimestamp = strtotime($row["appointment_date"]);
+                                            if ($appointmentDateTimestamp !== false && $row["appointment_date"] !== "0000-00-00") {
+                                                echo date("d M Y", $appointmentDateTimestamp);
+                                            } else {
+                                                echo "Date unavailable";
+                                            }
+                                            ?>
                                         </td>
 
                                         <td data-label="Time">
-                                            <?php echo date("h:i A", strtotime($row["appointment_time"])); ?>
+                                            <?php
+                                            $appointmentTimeTimestamp = strtotime($row["appointment_time"]);
+                                            if ($appointmentTimeTimestamp !== false && !empty($row["appointment_time"])) {
+                                                echo date("h:i A", $appointmentTimeTimestamp);
+                                            } else {
+                                                echo "Time unavailable";
+                                            }
+                                            ?>
                                         </td>
 
                                         <td data-label="Status">

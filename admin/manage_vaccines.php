@@ -10,71 +10,201 @@ if (!$result) {
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Manage Vaccines</title>
-    <link rel="stylesheet" href="CSS/manage-vaccines.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <title>Manage Vaccines | VaccineCare Admin</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+    <link rel="stylesheet" href="CSS/admin-app.css">
 </head>
+
 <body>
-    <nav class="module-nav">
-        <a href="dashboard.php"><i class="fa-solid fa-chart-line"></i> Dashboard</a>
-        <a href="manage_hospitals.php"><i class="fa-solid fa-hospital"></i> Manage Hospitals</a>
-        <a href="manage_vaccines.php" class="active"><i class="fa-solid fa-syringe"></i> Manage Vaccines</a>
-    </nav>
-<main class="page-container">
-    <header class="page-header">
-        <div>
-            <p class="eyebrow">Admin Panel</p>
-            <h1>Manage Vaccines</h1>
-            <p class="page-subtitle">Add, view, update and remove vaccines.</p>
-        </div>
-        <a href="add_vaccine.php" class="btn btn-primary"><i class="fa-solid fa-plus"></i> Add Vaccine</a>
-    </header>
 
-    <section class="content-card">
-        <div class="card-heading">
-            <h2>Vaccine List</h2>
-            <span class="count-badge"><?php echo mysqli_num_rows($result); ?> vaccines</span>
-        </div>
+<div class="app">
 
-        <?php if (isset($_GET["message"]) && $_GET["message"] === "added"): ?>
-            <div class="alert alert-success">Vaccine added successfully.</div>
-        <?php elseif (isset($_GET["message"]) && $_GET["message"] === "updated"): ?>
-            <div class="alert alert-success">Vaccine updated successfully.</div>
-        <?php elseif (isset($_GET["message"]) && $_GET["message"] === "deleted"): ?>
-            <div class="alert alert-success">Vaccine deleted successfully.</div>
-        <?php endif; ?>
+    <?php $activePage = "vaccines"; $adminBase = ""; include __DIR__ . "/includes/sidebar.php"; ?>
 
-        <div class="table-wrapper">
-            <table>
-                <thead><tr><th>Vaccine ID</th><th>Vaccine Name</th><th>Actions</th></tr></thead>
-                <tbody>
-                <?php if (mysqli_num_rows($result) > 0): ?>
-                    <?php while ($vaccine = mysqli_fetch_assoc($result)): ?>
-                        <tr>
-                            <td>#<?php echo (int) $vaccine["vaccine_id"]; ?></td>
-                            <td><?php echo htmlspecialchars($vaccine["vaccine_name"]); ?></td>
-                            <td>
-                                <div class="action-group">
-                                    <a class="btn btn-edit" href="edit_vaccine.php?id=<?php echo (int) $vaccine["vaccine_id"]; ?>"><i class="fa-solid fa-pen"></i> Edit</a>
-                                    <form action="delete_vaccine.php" method="POST" onsubmit="return confirm('Are you sure you want to delete this vaccine?');">
-                                        <input type="hidden" name="vaccine_id" value="<?php echo (int) $vaccine["vaccine_id"]; ?>">
-                                        <button type="submit" class="btn btn-delete"><i class="fa-solid fa-trash"></i> Delete</button>
-                                    </form>
-                                </div>
-                            </td>
-                        </tr>
-                    <?php endwhile; ?>
-                <?php else: ?>
-                    <tr><td colspan="3" class="empty-state">No vaccines have been added yet.</td></tr>
+    <div class="app-main">
+
+        <header class="topbar">
+
+            <div class="topbar-left">
+
+                <button type="button" class="icon-btn menu-btn" data-menu-toggle
+                        aria-label="Open menu" aria-controls="sidebar" aria-expanded="false">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+
+                <div class="topbar-title">
+                    <p>Admin Panel</p>
+                    <h2>Manage Vaccines</h2>
+                </div>
+
+            </div>
+
+            <div class="profile-chip">
+                <span class="avatar"><?php echo htmlspecialchars(strtoupper(substr($_SESSION["adminName"], 0, 1))); ?></span>
+
+                <span class="profile-text">
+                    <strong><?php echo htmlspecialchars($_SESSION["adminName"]); ?></strong>
+                    <small>Administrator</small>
+                </span>
+            </div>
+
+        </header>
+
+        <main class="page">
+
+            <div class="page-head">
+
+                <div>
+                    <span class="eyebrow">Vaccine Management</span>
+                    <h1>Manage Vaccines</h1>
+                    <p>Add, view, update and remove vaccines.</p>
+                </div>
+
+                <a href="add_vaccine.php" class="btn btn-primary">
+                    <i class="fa-solid fa-plus"></i>
+                    Add Vaccine
+                </a>
+
+            </div>
+
+
+            <div class="card">
+
+                <div class="card-head">
+
+                    <div>
+                        <h3>Vaccine List</h3>
+                        <p>All vaccines available for booking</p>
+                    </div>
+
+                    <span class="pill">
+                        <i class="fa-solid fa-syringe"></i>
+                        <?php echo mysqli_num_rows($result); ?> vaccines
+                    </span>
+
+                </div>
+
+
+                <?php if (isset($_GET["message"]) && $_GET["message"] === "added"): ?>
+                    <div class="alert success"><i class="fa-solid fa-circle-check"></i> Vaccine added successfully.</div>
+                <?php elseif (isset($_GET["message"]) && $_GET["message"] === "updated"): ?>
+                    <div class="alert success"><i class="fa-solid fa-circle-check"></i> Vaccine updated successfully.</div>
+                <?php elseif (isset($_GET["message"]) && $_GET["message"] === "deleted"): ?>
+                    <div class="alert success"><i class="fa-solid fa-circle-check"></i> Vaccine deleted successfully.</div>
                 <?php endif; ?>
-                </tbody>
-            </table>
-        </div>
-    </section>
-    <a href="dashboard.php" class="back-link"><i class="fa-solid fa-arrow-left"></i> Back to Dashboard</a>
-</main>
+
+
+                <?php if (mysqli_num_rows($result) > 0): ?>
+
+                    <div class="table-wrap">
+
+                        <table class="data-table">
+
+                            <thead>
+                                <tr>
+                                    <th>Vaccine ID</th>
+                                    <th>Vaccine Name</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+
+                                <?php while ($vaccine = mysqli_fetch_assoc($result)): ?>
+
+                                    <tr>
+
+                                        <td data-label="Vaccine ID">
+                                            <span class="id-tag">#<?php echo (int) $vaccine["vaccine_id"]; ?></span>
+                                        </td>
+
+                                        <td data-label="Vaccine">
+                                            <div class="cell-person">
+                                                <span class="avatar-sm"><i class="fa-solid fa-syringe"></i></span>
+                                                <span><?php echo htmlspecialchars($vaccine["vaccine_name"]); ?></span>
+                                            </div>
+                                        </td>
+
+                                        <td data-label="Actions">
+
+                                            <div class="row-actions">
+
+                                                <a class="action-btn edit-btn" href="edit_vaccine.php?id=<?php echo (int) $vaccine["vaccine_id"]; ?>">
+                                                    <i class="fa-solid fa-pen"></i>
+                                                    Edit
+                                                </a>
+
+                                                <form action="delete_vaccine.php" method="POST"
+                                                      onsubmit="return confirm('Are you sure you want to delete this vaccine?');">
+
+                                                    <input type="hidden" name="vaccine_id" value="<?php echo (int) $vaccine["vaccine_id"]; ?>">
+
+                                                    <button type="submit" class="action-btn delete-btn">
+                                                        <i class="fa-solid fa-trash"></i>
+                                                        Delete
+                                                    </button>
+
+                                                </form>
+
+                                            </div>
+
+                                        </td>
+
+                                    </tr>
+
+                                <?php endwhile; ?>
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                <?php else: ?>
+
+                    <div class="empty-state">
+
+                        <div class="empty-icon">
+                            <i class="fa-solid fa-syringe"></i>
+                        </div>
+
+                        <h3>No Vaccines Yet</h3>
+
+                        <p>No vaccines have been added yet.</p>
+
+                        <a href="add_vaccine.php" class="btn btn-primary">
+                            <i class="fa-solid fa-plus"></i>
+                            Add Vaccine
+                        </a>
+
+                    </div>
+
+                <?php endif; ?>
+
+            </div>
+
+        </main>
+
+        <footer class="app-footer">
+            &copy; 2026 VaccineCare. Vaccination Management System.
+        </footer>
+
+    </div>
+
+</div>
+
+<script src="JS/admin.js"></script>
+
 </body>
 </html>

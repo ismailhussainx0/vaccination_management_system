@@ -215,8 +215,9 @@ function getVaccinationStatusClass($status) {
 
                                         <td data-label="Date">
                                             <?php
-                                            if (!empty($row["vaccination_date"])) {
-                                                echo date("d M Y", strtotime($row["vaccination_date"]));
+                                            $vaccinationDateTimestamp = strtotime($row["vaccination_date"] ?? "");
+                                            if ($vaccinationDateTimestamp !== false && !empty($row["vaccination_date"]) && $row["vaccination_date"] !== "0000-00-00") {
+                                                echo date("d M Y", $vaccinationDateTimestamp);
                                             } else {
                                                 echo "Not available";
                                             }

@@ -1,4 +1,3 @@
-
 <?php
 
 session_start();
@@ -59,55 +58,96 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Admin Login</title>
+    <title>Admin Login | VaccineCare</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 
     <link rel="stylesheet" href="CSS/admin-login.css">
 </head>
 
 <body>
 
-    <div class="login-container">
+    <main class="login-page">
 
-        <div class="login-header">
-            <h1>Admin Panel</h1>
-            <p>Vaccination Management System</p>
-        </div>
+        <section class="login-card">
 
-        <form method="POST">
+            <div class="login-header">
 
-            <div class="form-group">
-                <label>Email Address</label>
+                <div class="brand-icon">
+                    <i class="fa-solid fa-user-shield"></i>
+                </div>
 
-                <input
-                    type="email"
-                    name="admin_email"
-                    placeholder="Enter your email"
-                    required
-                >
-            </div>
+                <p class="brand-name">VaccineCare Admin</p>
 
-            <div class="form-group">
-                <label>Password</label>
+                <h1>Admin Panel</h1>
 
-                <input
-                    type="password"
-                    name="admin_password"
-                    placeholder="Enter your password"
-                    required
-                >
+                <p class="subtitle">Vaccination Management System</p>
+
             </div>
 
             <?php if (!empty($error)) { ?>
-                <p class="error-message">
+                <div class="alert-message">
+                    <i class="fa-solid fa-circle-exclamation"></i>
                     <?php echo htmlspecialchars($error); ?>
-                </p>
+                </div>
             <?php } ?>
 
-            <button type="submit">Login to Dashboard</button>
+            <form method="POST" class="login-form">
 
-        </form>
+                <div class="form-group">
 
-    </div>
+                    <label for="admin_email">Email Address</label>
+
+                    <div class="input-wrapper">
+                        <i class="fa-solid fa-envelope"></i>
+
+                        <input
+                            type="email"
+                            id="admin_email"
+                            name="admin_email"
+                            placeholder="Enter your email"
+                            required
+                        >
+                    </div>
+
+                </div>
+
+                <div class="form-group">
+
+                    <label for="admin_password">Password</label>
+
+                    <div class="input-wrapper">
+                        <i class="fa-solid fa-lock"></i>
+
+                        <input
+                            type="password"
+                            id="admin_password"
+                            name="admin_password"
+                            placeholder="Enter your password"
+                            required
+                        >
+                    </div>
+
+                </div>
+
+                <button type="submit" class="login-btn">
+                    Login to Dashboard
+                    <i class="fa-solid fa-arrow-right"></i>
+                </button>
+
+            </form>
+
+            <p class="footer-text">
+                &copy; 2026 VaccineCare. All rights reserved.
+            </p>
+
+        </section>
+
+    </main>
 
 </body>
 </html>

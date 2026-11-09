@@ -3,6 +3,11 @@
 session_start();
 include "../config/db_connection.php";
 
+if (!empty($_SESSION["hospitalId"])) {
+    header("Location: hospital_dashboard.php");
+    exit;
+}
+
 $loginMessage = "";
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
@@ -32,8 +37,13 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
                     if (password_verify($enterPassword, $storedHash)) {
 
+                        // Regenerate the session ID after successful authentication.
+                        session_regenerate_id(true);
+
                         $_SESSION['hospitalId'] = $resultRow['hospital_id'];
                         $_SESSION['hospitalName'] = $resultRow['hospital_name'];
+
+                        $selectStmt->close();
 
                         header("Location: hospital_dashboard.php");
                         exit;

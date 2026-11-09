@@ -1,4 +1,3 @@
-
 <?php
 
 include "../config/db_connection.php";
@@ -23,153 +22,157 @@ if (!$result) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Manage Hospitals | Admin Panel</title>
 
-    <link rel="stylesheet" href="CSS/manage-hospitals.css">
+    <title>Manage Hospitals | VaccineCare Admin</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="CSS/admin-app.css">
 </head>
 
 <body>
 
-    <div class="dashboard-container">
+<div class="app">
 
-        <!-- SIDEBAR -->
-        <aside class="sidebar">
+    <?php $activePage = "hospitals"; $adminBase = ""; include __DIR__ . "/includes/sidebar.php"; ?>
 
-            <div class="sidebar-logo">
-                <i class="fa-solid fa-shield-heart"></i>
-                <h2>VaxCare Admin</h2>
+    <div class="app-main">
+
+        <header class="topbar">
+
+            <div class="topbar-left">
+
+                <button type="button" class="icon-btn menu-btn" data-menu-toggle
+                        aria-label="Open menu" aria-controls="sidebar" aria-expanded="false">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+
+                <div class="topbar-title">
+                    <p>Admin Panel</p>
+                    <h2>Manage Hospitals</h2>
+                </div>
+
             </div>
 
-            <nav class="sidebar-nav">
+            <div class="profile-chip">
+                <span class="avatar"><?php echo htmlspecialchars(strtoupper(substr($_SESSION["adminName"], 0, 1))); ?></span>
 
-                <a href="dashboard.php">
-                    <i class="fa-solid fa-chart-line"></i>
-                    Dashboard
-                </a>
+                <span class="profile-text">
+                    <strong><?php echo htmlspecialchars($_SESSION["adminName"]); ?></strong>
+                    <small>Administrator</small>
+                </span>
+            </div>
 
-                <a href="manage_hospitals.php" class="active">
-                    <i class="fa-solid fa-hospital"></i>
-                    Manage Hospitals
-                </a>
+        </header>
 
-                <a href="manage_vaccines.php">
-                    <i class="fa-solid fa-syringe"></i>
-                    Manage Vaccines
-                </a>
+        <main class="page">
 
-                <a href="admin_logout.php" class="logout-link">
-                    <i class="fa-solid fa-right-from-bracket"></i>
-                    Logout
-                </a>
+            <div class="page-head">
 
-            </nav>
-
-        </aside>
-
-
-        <!-- MAIN CONTENT -->
-        <main class="main-content">
-
-            <header class="topbar">
                 <div>
+                    <span class="eyebrow">Hospital Management</span>
                     <h1>Manage Hospitals</h1>
                     <p>View and manage registered hospitals.</p>
                 </div>
 
-                <div class="admin-info">
-                    <i class="fa-solid fa-user-shield"></i>
-                    <span>
-                        <?php echo htmlspecialchars($_SESSION["adminName"]); ?>
-                    </span>
-                </div>
-            </header>
+                <a href="add_hospital.php" class="btn btn-primary">
+                    <i class="fa-solid fa-plus"></i>
+                    Add Hospital
+                </a>
+
+            </div>
 
 
-            <!-- HOSPITALS SECTION -->
-            <section class="content-section">
+            <div class="card">
 
-                <div class="section-header">
+                <div class="card-head">
+
                     <div>
-                        <h2>All Hospitals</h2>
+                        <h3>All Hospitals</h3>
                         <p>Registered hospitals in the system</p>
                     </div>
 
-                    <a href="add_hospital.php" class="add-btn">
-                        <i class="fa-solid fa-plus"></i>
-                        Add Hospital
-                    </a>
+                    <span class="pill">
+                        <i class="fa-solid fa-hospital"></i>
+                        <?php echo mysqli_num_rows($result); ?> Hospitals
+                    </span>
+
                 </div>
 
 
-                <div class="table-container">
+                <?php if (mysqli_num_rows($result) > 0) { ?>
 
-                    <table>
+                    <div class="table-wrap">
 
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Hospital Name</th>
-                                <th>Address</th>
-                                <th>Email</th>
-                                <th>Phone</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
+                        <table class="data-table">
 
-                        <tbody>
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Hospital Name</th>
+                                    <th>Address</th>
+                                    <th>Email</th>
+                                    <th>Phone</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
 
-                            <?php if (mysqli_num_rows($result) > 0) { ?>
+                            <tbody>
 
                                 <?php while ($hospital = mysqli_fetch_assoc($result)) { ?>
 
                                     <tr>
 
-                                        <td>
-                                            <?php echo $hospital["hospital_id"]; ?>
+                                        <td data-label="ID">
+                                            <span class="id-tag">#<?php echo $hospital["hospital_id"]; ?></span>
                                         </td>
 
-                                        <td>
-                                            <?php echo htmlspecialchars($hospital["hospital_name"]); ?>
+                                        <td data-label="Hospital">
+                                            <div class="cell-person">
+                                                <span class="avatar-sm"><i class="fa-solid fa-hospital"></i></span>
+                                                <span><?php echo htmlspecialchars($hospital["hospital_name"]); ?></span>
+                                            </div>
                                         </td>
 
-                                        <td>
+                                        <td data-label="Address" class="cell-wrap">
                                             <?php echo htmlspecialchars($hospital["hospital_address"]); ?>
                                         </td>
 
-                                        <td>
+                                        <td data-label="Email" class="cell-wrap">
                                             <?php echo htmlspecialchars($hospital["hospital_email"]); ?>
                                         </td>
 
-                                        <td>
+                                        <td data-label="Phone">
                                             <?php echo htmlspecialchars($hospital["hospital_phone"]); ?>
                                         </td>
 
-                                        <td class="action-buttons">
+                                        <td data-label="Actions">
 
-                                            <a href="edit_hospital.php?id=<?php echo $hospital["hospital_id"]; ?>" class="edit-btn">
-                                                <i class="fa-solid fa-pen"></i>
-                                                Edit
-                                            </a>
+                                            <div class="row-actions">
 
-                                        <form action="delete_hospital.php" method="POST"
-                                        onsubmit="return confirm('Are you sure you want to delete this hospital?');">
+                                                <a href="edit_hospital.php?id=<?php echo $hospital["hospital_id"]; ?>" class="action-btn edit-btn">
+                                                    <i class="fa-solid fa-pen"></i>
+                                                    Edit
+                                                </a>
 
-                                        <input type="hidden" name="hospital_id"
-                                            value="<?php echo $hospital["hospital_id"]; ?>">
+                                                <form action="delete_hospital.php" method="POST"
+                                                      onsubmit="return confirm('Are you sure you want to delete this hospital?');">
 
-                                        <button type="submit" class="delete-btn">
-                                            <i class="fa-solid fa-trash"></i>
-                                            Delete
-                                        </button>
+                                                    <input type="hidden" name="hospital_id"
+                                                           value="<?php echo $hospital["hospital_id"]; ?>">
 
-                                    </form>
+                                                    <button type="submit" class="action-btn delete-btn">
+                                                        <i class="fa-solid fa-trash"></i>
+                                                        Delete
+                                                    </button>
+
+                                                </form>
+
+                                            </div>
 
                                         </td>
 
@@ -177,27 +180,46 @@ if (!$result) {
 
                                 <?php } ?>
 
-                            <?php } else { ?>
+                            </tbody>
 
-                                <tr>
-                                    <td colspan="6" class="empty-message">
-                                        No hospitals registered yet.
-                                    </td>
-                                </tr>
+                        </table>
 
-                            <?php } ?>
+                    </div>
 
-                        </tbody>
+                <?php } else { ?>
 
-                    </table>
+                    <div class="empty-state">
 
-                </div>
+                        <div class="empty-icon">
+                            <i class="fa-solid fa-hospital"></i>
+                        </div>
 
-            </section>
+                        <h3>No Hospitals Yet</h3>
+
+                        <p>No hospitals registered yet.</p>
+
+                        <a href="add_hospital.php" class="btn btn-primary">
+                            <i class="fa-solid fa-plus"></i>
+                            Add Hospital
+                        </a>
+
+                    </div>
+
+                <?php } ?>
+
+            </div>
 
         </main>
 
+        <footer class="app-footer">
+            &copy; 2026 VaccineCare. Vaccination Management System.
+        </footer>
+
     </div>
+
+</div>
+
+<script src="JS/admin.js"></script>
 
 </body>
 </html>
